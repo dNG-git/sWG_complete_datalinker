@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<swg_lang_file_v1 xmlns="urn:de.direct-netware.xmlns:swg.lang.v1">
+
+<en>
+<datalinker>
+<account><pms><string tid="c0a38f7c90c17551fb03dbd2d80f0aba" translation="Private messages" /></pms></account>
+<contentor><string tid="87ecbe0ba0a0b3c7e60030043614e655" translation="Published documents" /></contentor>
+<datacenter><string tid="d4d66a02daefdb2f70ff2507a78fd5ec" translation="Files" /></datacenter>
+<discuss><string tid="cb41ecf6e90a594dcea60b6140251d62" translation="Discussions" /></discuss>
+</datalinker>
+</en>
+
+<de>
+<datalinker>
+<account><pms><string tid="c0a38f7c90c17551fb03dbd2d80f0aba" translation="Private Nachrichten" /></pms></account>
+<contentor><string tid="87ecbe0ba0a0b3c7e60030043614e655" translation="Veröffentlichte Dokumente" /></contentor>
+<datacenter><string tid="d4d66a02daefdb2f70ff2507a78fd5ec" translation="Dateien" /></datacenter>
+<discuss><string tid="cb41ecf6e90a594dcea60b6140251d62" translation="Diskussionsbeiträge" /></discuss>
+</datalinker>
+</de>
+
+</swg_lang_file_v1>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<swg_lang_file_v1>
+
+<datalinker>
+ <done>
+  <entry><select><input input="string" /></select></entry>
+  <selector><preselect><input input="string" /></preselect></selector>
+ </done>
+
+ <entry><select><input input="string" /></select></entry>
+ <entries><selector><input input="string" /></selector></entries>
+
+ <object>
+  <mark><input input="string" /></mark>
+  <unmark><input input="string" /></unmark>
+ </object>
+
+ <selector><preselect><input input="string" /></preselect></selector>
+
+ <subs>
+  <list><empty><input input="string" /></empty></list>
+
+  <mode>
+   <input input="string" />
+
+   <entry>
+    <existing><input input="string" /></existing>
+    <new><input input="string" /></new>
+   </entry>
+  </mode>
+
+  <supported><input input="string" /></supported>
+  <type><input input="string" /></type>
+ </subs>
+
+ <view><input input="string" /></view>
+</datalinker>
+
+</swg_lang_file_v1>
