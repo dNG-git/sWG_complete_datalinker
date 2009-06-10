@@ -89,7 +89,7 @@ class direct_datalinker_uhome extends direct_datalinker
 Extend the class
 ------------------------------------------------------------------------- */
 
-	//f// direct_datalinker_uhome->__construct () and direct_datalinker_uhome->direct_datalinker_uhome ()
+	//f// direct_datalinker_uhome->__construct ()
 /**
 	* Constructor (PHP5) __construct (direct_datalinker_uhome)
 	*
@@ -341,7 +341,7 @@ $this->data = array (
 "ddbdatalinker_views" => 0
 );
 
-					$f_return =& $this->data;
+					$f_return = $this->data;
 				}
 			}
 		}

@@ -129,7 +129,7 @@ class direct_datalinker extends direct_data_handler
 Extend the class
 ------------------------------------------------------------------------- */
 
-	//f// direct_datalinker->__construct () and direct_datalinker->direct_datalinker ()
+	//f// direct_datalinker->__construct ()
 /**
 	* Constructor (PHP5) __construct (direct_datalinker)
 	*
@@ -675,7 +675,7 @@ Set up an additional variables :)
 					if (($this->data['ddbdatalinker_datasubs_type'] !== NULL)&&(($this->data['ddbdatalinker_datasubs_new'])||($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type']) > 3))) { $this->data_subs_allowed = true; }
 					else { $this->data_subs_allowed = false; }
 
-					$f_return =& $this->data;
+					$f_return = $this->data;
 				}
 			}
 		}
@@ -776,7 +776,7 @@ Set up an additional variables :)
 					}
 				}
 
-				$f_return =& $this->data_sid_type_table;
+				$f_return = $this->data_sid_type_table;
 			}
 		}
 
@@ -924,7 +924,7 @@ $f_select_criteria = ("<sqlordering>
 				{
 					$f_return['objects'][$f_result_array['ddbdatalinker_id']] = $f_result_array;
 					if (!isset ($f_cache_array[$f_result_array['ddbdatalinker_id_parent']])) { $f_cache_array[$f_result_array['ddbdatalinker_id_parent']] = array (); }
-					$f_cache_array[$f_result_array['ddbdatalinker_id_parent']][$f_result_array['ddbdatalinker_id']] =& $f_return['objects'][$f_result_array['ddbdatalinker_id']];
+					$f_cache_array[$f_result_array['ddbdatalinker_id_parent']][$f_result_array['ddbdatalinker_id']] = $f_return['objects'][$f_result_array['ddbdatalinker_id']];
 				}
 			}
 		}
@@ -1022,7 +1022,7 @@ $f_select_criteria = ("<sqlordering>
 			if ($f_results_array)
 			{
 				$this->data_subcounts = $f_results_array;
-				$f_return =& $this->data_subcounts;
+				$f_return = $this->data_subcounts;
 			}
 		}
 
