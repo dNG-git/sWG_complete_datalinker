@@ -1440,7 +1440,7 @@ $f_select_criteria = ("<sqlordering>
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->parse ($f_prefix)- (#echo(__LINE__)#)"); }
 		$f_return = array ();
 
-		if ($this->data)
+		if (count ($this->data) > 1)
 		{
 			$f_id_safe = strtolower (preg_replace ("#\W#","_",$this->data['ddbdatalinker_id']));
 			$f_return[$f_prefix."id"] = "swgdhandlerdatalinker".$f_id_safe;
