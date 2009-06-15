@@ -108,6 +108,10 @@ class direct_datalinker extends direct_data_handler
 */
 	protected $data_extra_joins;
 /**
+	* @var string $data_sid SID of this DataLinker object
+*/
+	protected $data_sid;
+/**
 	* @var array $data_sid_type_table Cache for SID and type identifiers
 */
 	protected $data_sid_type_table;
@@ -196,6 +200,7 @@ Set up an additional variables :)
 		$this->data_extra_conditions = array ();
 		$this->data_extra_joins = array ();
 		$this->data_insert_mode = false;
+		$this->data_sid = NULL;
 		$this->data_sid_type_table = array ();
 		$this->data_subcounts = array ();
 		$this->data_subs_allowed = false;
