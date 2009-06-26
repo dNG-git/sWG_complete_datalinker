@@ -124,7 +124,7 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 		if ((($f_hide_override === NULL)&&($f_data[$f_prefix."subs_hide"]))||(($f_hide_override !== NULL)&&($f_hide_override)))
 		{
 $f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_target}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+{$f_view}{$f_view_options_code}++source+".$f_source))."' target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
-if ((djs_swgAJAX)&&(djs_swgDOM)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href=\"javascript:djs_dataport_".$f_data[$f_prefix."subs_id"]."_call_url0('m=dataport&s=swgap;datalinker;iview&a=list_{$f_target}&dsd=dtheme+0++deid+".$f_data[$f_prefix."oid"]."++decount+$f_embedded_count++dview+{$f_view}{$f_view_options_code}++source+{$f_source}');\" target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p>\",'swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point'); }
+if ((djs_swgAJAX)&&(djs_swgDOM)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_".$f_data[$f_prefix."subs_id"]."_call_url0('m=dataport&amp;s=swgap;datalinker;iview&amp;a=list_{$f_target}&amp;dsd=dtheme+0++deid+".$f_data[$f_prefix."oid"]."++decount+$f_embedded_count++dview+{$f_view}{$f_view_options_code}++source+{$f_source}');\\\" target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p>\",'swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point'); }
 ]]></script>");
 		}
 		else
@@ -391,7 +391,7 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 $f_return .= ("<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href='".(direct_linker ("url0",$f_url."++dtheme+1"))."' target='_self'>".(direct_local_get ("core_datasub_title_link_default"))."</a></p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
-	if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href=\"javascript:djs_dataport_{$f_eid}_call_url0('$f_url');\">".(direct_local_get ("core_datasub_title_link_default"))."</a></p>\",'swgAJAX_datalinker_iview_{$f_eid}_point'); }
+	if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_{$f_eid}_call_url0('$f_url');\\\">".(direct_local_get ("core_datasub_title_link_default"))."</a></p>\",'swgAJAX_datalinker_iview_{$f_eid}_point'); }
 }
 ]]></script>");
 	}
