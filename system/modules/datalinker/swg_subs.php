@@ -230,7 +230,7 @@ Build the form
 
 		$direct_cachedata['output_formelements'] = $direct_classes['formbuilder']->form_get ($g_mode_save);
 
-		if (($g_mode_save)&&($direct_classes['formbuilder']->dvar_check_result))
+		if (($g_mode_save)&&($direct_classes['formbuilder']->check_result))
 		{
 /* -------------------------------------------------------------------------
 Save data edited

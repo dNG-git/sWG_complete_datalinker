@@ -104,7 +104,7 @@ My parent should be on my side to get the work done
 Informing the system about the available function
 ------------------------------------------------------------------------- */
 
-		$this->dvar_functions['subkernel_init'] = true;
+		$this->functions['subkernel_init'] = true;
 	}
 
 	//f// direct_subkernel_datalinker->subkernel_init ($f_threshold_id = "")
