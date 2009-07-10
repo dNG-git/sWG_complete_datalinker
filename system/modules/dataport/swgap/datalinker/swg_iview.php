@@ -28,7 +28,6 @@ this program; if not, write to the Free Software Foundation, Inc.,
 ----------------------------------------------------------------------------
 http://www.direct-netware.de/redirect.php?licenses;gpl
 ----------------------------------------------------------------------------
-$Id: swg_iview.php,v 1.1 2009/01/01 13:46:16 s4u Exp $
 #echo(sWGdatalinkerVersion)#
 sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------

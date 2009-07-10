@@ -28,7 +28,6 @@ this program; if not, write to the Free Software Foundation, Inc.,
 ----------------------------------------------------------------------------
 http://www.direct-netware.de/redirect.php?licenses;gpl
 ----------------------------------------------------------------------------
-$Id: swg_selector.php,v 1.2 2008/12/31 15:36:16 s4u Exp $
 #echo(sWGdatalinkerVersion)#
 sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------

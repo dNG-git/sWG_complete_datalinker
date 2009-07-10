@@ -28,7 +28,6 @@ this program; if not, write to the Free Software Foundation, Inc.,
 ----------------------------------------------------------------------------
 http://www.direct-netware.de/redirect.php?licenses;gpl
 ----------------------------------------------------------------------------
-$Id: swgi_datalinker_iview.php,v 1.3 2009/03/02 17:54:03 s4u Exp $
 #echo(sWGdatalinkerVersion)#
 sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
