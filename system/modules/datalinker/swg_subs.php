@@ -79,9 +79,7 @@ switch ($direct_settings['a'])
 case "new":
 case "new-save":
 {
-	if ($direct_settings['a'] == "new-save") { $g_mode_save = true; }
-	else { $g_mode_save = false; }
-
+	$g_mode_save = (($direct_settings['a'] == "new-save") ? true : false);
 	if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _a={$direct_settings['a']}_ (#echo(__LINE__)#)"); }
 
 	$g_eid = (isset ($direct_settings['dsd']['deid']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['deid'])) : "");
@@ -89,8 +87,7 @@ case "new-save":
 	$g_source = (isset ($direct_settings['dsd']['source']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['source'])) : "");
 	$g_target = (isset ($direct_settings['dsd']['target']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['target'])) : "");
 
-	if ($g_source) { $g_source_url = base64_decode ($g_source); }
-	else { $g_source_url = "m=datalinker&a=view&dsd=[oid]"; }
+	$g_source_url = ($g_source ? base64_decode ($g_source) : "m=datalinker&a=view&dsd=[oid]");
 
 	if ($g_target) { $g_target_url = base64_decode ($g_target); }
 	else
@@ -118,9 +115,12 @@ case "new-save":
 	{
 	//j// BOA
 	if ($g_mode_save) { direct_output_related_manager ("datalinker_subs_new_{$g_task_array['datalinker_eid']}_form_save","pre_module_service_action"); }
-	else { direct_output_related_manager ("datalinker_subs_new_{$g_task_array['datalinker_eid']}_form","pre_module_service_action"); }
+	else
+	{
+		direct_output_related_manager ("datalinker_subs_new_{$g_task_array['datalinker_eid']}_form","pre_module_service_action");
+		$direct_classes['kernel']->service_https ($direct_settings['datalinker_https_subs_new'],$direct_cachedata['page_this']);
+	}
 
-	if (!$g_mode_save) { $direct_classes['kernel']->service_https ($direct_settings['datalinker_https_subs_new'],$direct_cachedata['page_this']); }
 	direct_local_integration ("datalinker");
 
 	$g_continue_check = $direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_tmp_storager.php");
@@ -146,13 +146,11 @@ case "new-save":
 		$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/classes/dhandler/swg_datalinker.php");
 		$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/classes/dhandler/swg_datalinker_uhome.php");
 
-		if (strpos ($g_task_array['datalinker_eid'],"u-") === 0) { $g_datalinker_object = new direct_datalinker_uhome (); }
-		else { $g_datalinker_object = new direct_datalinker (); }
+		$g_datalinker_object = ((strpos ($g_task_array['datalinker_eid'],"u-") === 0) ? new direct_datalinker_uhome () : new direct_datalinker ());
 
-		if (($g_tid)&&($g_datalinker_object)) { $g_datalinker_array = $g_datalinker_object->get ($g_task_array['datalinker_eid']); }
-		else { $g_datalinker_array = NULL; }
+		$g_datalinker_array = ((($g_tid)&&($g_datalinker_object)) ? $g_datalinker_object->get ($g_task_array['datalinker_eid']) : NULL);
 
-		if ($g_datalinker_array)
+		if (is_array ($g_datalinker_array))
 		{
 			$g_service_array = $g_datalinker_object->get_service ($g_datalinker_array['ddbdatalinker_sid']);
 
@@ -169,11 +167,10 @@ case "new-save":
 
 			if ($g_datalinker_object)
 			{
-				if (direct_class_function_check ($g_datalinker_object,"is_readable")) { $g_continue_check = $g_datalinker_object->is_readable (); }
-				else { $g_continue_check = true; }
+				$g_continue_check = ((direct_class_function_check ($g_datalinker_object,"is_readable")) ? $g_datalinker_object->is_readable () : true);
+				if ($g_continue_check) { $g_continue_check = $g_datalinker_object->is_sub_allowed (); }
 			}
-
-			if ($g_continue_check) { $g_continue_check = $g_datalinker_object->is_sub_allowed (); }
+			else { $g_continue_check = false; }
 		}
 	}
 
@@ -210,10 +207,7 @@ We should have input in save mode
 
 			$direct_cachedata['i_dsub'] .= "<s$g_sid><value value='$g_sid' />";
 			if ($g_sub_sid == $g_sid) { $direct_cachedata['i_dsub'] .= "<selected value='1' />"; }
-
-			if ($g_service_name) { $direct_cachedata['i_dsub'] .= "<text><![CDATA[$g_service_name]]></text>"; }
-			else { $direct_cachedata['i_dsub'] .= "<text><![CDATA[".(direct_local_get ("core_unknown"))." ($g_service)]]></text>"; }
-
+			$direct_cachedata['i_dsub'] .= ($g_service_name ? "<text><![CDATA[$g_service_name]]></text>" : "<text><![CDATA[".(direct_local_get ("core_unknown"))." ($g_service)]]></text>");
 			$direct_cachedata['i_dsub'] .= "</s$g_sid>";
 		}
 
@@ -432,19 +426,12 @@ case "new-selected":
 		direct_class_init ("output");
 		$direct_classes['output']->options_insert (2,"servicemenu",$direct_cachedata['page_backlink'],(direct_local_get ("core_back")),$direct_settings['serviceicon_default_back'],"url0");
 
-		if (strpos ($g_task_array['datalinker_eid'],"u-") === 0) { $g_datalinker_parent_object = new direct_datalinker_uhome (); }
-		else { $g_datalinker_parent_object = new direct_datalinker (); }
+		$g_datalinker_child_object = ((strpos ($g_task_array['datalinker_sub_id'],"u-") === 0) ? new direct_datalinker_uhome () : new direct_datalinker ());
+		$g_datalinker_child_array = ($g_datalinker_child_object ? $g_datalinker_child_object->get ($g_task_array['datalinker_sub_id']) : NULL);
+		$g_datalinker_parent_object = ((strpos ($g_task_array['datalinker_eid'],"u-") === 0) ? new direct_datalinker_uhome () : new direct_datalinker ());
+		$g_datalinker_parent_array = ($g_datalinker_parent_object ? $g_datalinker_parent_object->get ($g_task_array['datalinker_eid']) : NULL);
 
-		if ($g_datalinker_parent_object) { $g_datalinker_parent_array = $g_datalinker_parent_object->get ($g_task_array['datalinker_eid']); }
-
-		if (strpos ($g_task_array['datalinker_sub_id'],"u-") === 0) { $g_datalinker_child_object = new direct_datalinker_uhome (); }
-		else { $g_datalinker_child_object = new direct_datalinker (); }
-
-		if ($g_datalinker_child_object) { $g_datalinker_child_array = $g_datalinker_child_object->get ($g_task_array['datalinker_sub_id']); }
-
-		if (($g_datalinker_parent_array)&&($g_datalinker_child_array)) { $g_continue_check = true; }
-		else { $g_continue_check = false; }
-
+		$g_continue_check = (((is_array ($g_datalinker_parent_array))&&(is_array ($g_datalinker_child_array))) ? true : false);
 		if (($g_continue_check)&&($g_datalinker_parent_array['ddbdatalinker_id'] == $g_datalinker_child_array['ddbdatalinker_id_parent'])) { $g_continue_check = $g_datalinker_parent_object->add_subs (1); }
 
 		if ($g_continue_check)

@@ -120,17 +120,8 @@ function direct_output_oset_datalinker_embedded_ajax_iview_content ()
 		if ($direct_cachedata['output_object']['object_new']) { $f_return .= "<img src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/status_object_new.png",true,false))."' border='0' alt='".(direct_local_get ("datalinker_entry_new"))."' title='".(direct_local_get ("datalinker_entry_new"))."' style='float:right' />"; }
 		if ($direct_cachedata['output_object']['object_symbol']) { $f_return .= "<img src='{$direct_cachedata['output_object']['object_symbol']}' border='0' alt='' title='' style='float:left;margin-right:5px' />"; }
 
-		if ((isset ($direct_cachedata['output_object']['object_title_alt']))&&(strlen ($direct_cachedata['output_object']['object_title_alt'])))
-		{
-			if ($direct_cachedata['output_object']['object_url']) { $f_return .= "<a href='{$direct_cachedata['output_object']['object_url']}' target='_blank'>{$direct_cachedata['output_object']['object_title_alt']}</a>"; }
-			else { $f_return .= $direct_cachedata['output_object']['object_title_alt']; }
-		}
-		else
-		{
-			if ($direct_cachedata['output_object']['object_url']) { $f_return .= "<a href='{$direct_cachedata['output_object']['object_url']}' target='_blank'>{$direct_cachedata['output_object']['object_title']}</a>"; }
-			else { $f_return .= $direct_cachedata['output_object']['object_title']; }
-		}
-
+		$g_object_title = (((isset ($direct_cachedata['output_object']['object_title_alt']))&&(strlen ($direct_cachedata['output_object']['object_title_alt']))) ? $direct_cachedata['output_object']['object_title_alt'] : $direct_cachedata['output_object']['object_title']);
+		$f_return .= ($direct_cachedata['output_object']['object_url'] ? "<a href='{$direct_cachedata['output_object']['object_url']}' target='_blank'>$g_object_title</a>" : $g_object_title);
 		if (strlen ($direct_cachedata['output_object']['object_entries'])) { $f_return .= " <span style='font-size:10px'>({$direct_cachedata['output_object']['object_entries']})</span>"; }
 		$f_return .= "</p>";
 
@@ -140,11 +131,9 @@ function direct_output_oset_datalinker_embedded_ajax_iview_content ()
 			{
 				$f_return .= "<p class='pageextracontent' style='font-size:10px;font-weight:bold'>";
 				if ($direct_cachedata['output_object']['object_last_useravatar']) { $f_return .= "<img src='{$direct_cachedata['output_object']['object_last_useravatar']}' border='0' alt='' title='' style='float:right;margin-left:5px' />"; }
+
 				$f_return .= (direct_local_get ("core_datasub_last_entry_1_1")).$direct_cachedata['output_object']['object_last_time'].(direct_local_get ("core_datasub_last_entry_1_2"));
-
-				if ($direct_cachedata['output_object']['object_last_userpageurl']) { $f_return .= "<a href=\"{$direct_cachedata['output_object']['object_last_userpageurl']}\" target='_blank'>{$direct_cachedata['output_object']['object_last_username']}</a>"; }
-				else { $f_return .= $direct_cachedata['output_object']['object_last_username']; }
-
+				$f_return .= ($direct_cachedata['output_object']['object_last_userpageurl'] ? "<a href=\"{$direct_cachedata['output_object']['object_last_userpageurl']}\" target='_blank'>{$direct_cachedata['output_object']['object_last_username']}</a>" : $direct_cachedata['output_object']['object_last_username']);
 				$f_return .= (direct_local_get ("core_datasub_last_entry_1_3"))."</p>";
 			}
 			else { $f_return .= "<p class='pageextracontent' style='font-size:10px;font-weight:bold'>".(direct_local_get ("core_datasub_last_entry_0_1")).$direct_cachedata['output_object']['object_last_time'].(direct_local_get ("core_datasub_last_entry_0_2"))."</p>"; }
@@ -158,10 +147,7 @@ function direct_output_oset_datalinker_embedded_ajax_iview_content ()
 		{
 			$f_return .= "<p class='pageextracontent' style='font-size:8px'>";
 			if ($direct_cachedata['output_object']['category_title_type']) { $f_return .= $direct_cachedata['output_object']['category_title_type'].": "; }
-
-			if ($direct_cachedata['output_object']['category_url']) { $f_return .= "<a href='{$direct_cachedata['output_object']['category_url']}' target='_blank'>{$direct_cachedata['output_object']['category_title']}</a>"; }
-			else { $f_return .= $direct_cachedata['output_object']['category_title']; }
-
+			$f_return .= ($direct_cachedata['output_object']['category_url'] ? "<a href='{$direct_cachedata['output_object']['category_url']}' target='_blank'>{$direct_cachedata['output_object']['category_title']}</a>" : $direct_cachedata['output_object']['category_title']);
 			if (strlen ($direct_cachedata['output_object']['category_entries'])) { $f_return .= " ({$direct_cachedata['output_object']['category_entries']})"; }
 			$f_return .= "</p>";
 		}
@@ -189,8 +175,7 @@ function direct_output_oset_datalinker_embedded_iview ()
 
 	$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
 
-	if ((isset ($direct_cachedata['output_object']['subs_title']))&&(strlen ($direct_cachedata['output_object']['subs_title']))) { $f_return = "<p class='pagecontenttitle'>{$direct_cachedata['output_object']['subs_title']}</p>"; }
-	else { $f_return = "<p class='pagecontenttitle'>{$direct_cachedata['output_object']['title']}</p>"; }
+	$f_return = (((isset ($direct_cachedata['output_object']['subs_title']))&&(strlen ($direct_cachedata['output_object']['subs_title']))) ? "<p class='pagecontenttitle'>{$direct_cachedata['output_object']['subs_title']}</p>" : "<p class='pagecontenttitle'>{$direct_cachedata['output_object']['title']}</p>");
 
 	if (empty ($direct_cachedata['output_objects'])) { $f_return .= "<p class='pagecontent' style='font-weight:bold'>".(direct_local_get ("datalinker_subs_list_empty"))."</p>"; }
 	else

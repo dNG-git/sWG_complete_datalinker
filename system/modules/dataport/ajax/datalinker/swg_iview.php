@@ -88,10 +88,9 @@ case "content":
 	//j// BOA
 	direct_output_related_manager ("datalinker_iview_content","pre_module_service_action_ajax");
 
-	if (strpos ($g_eid,"u-") === 0) { $g_datalinker_object = new direct_datalinker_uhome (); }
-	else { $g_datalinker_object = new direct_datalinker (); }
+	$g_datalinker_object = ((strpos ($g_eid,"u-") === 0) ? new direct_datalinker_uhome () : new direct_datalinker ());
 
-	if ($g_datalinker_object) { $g_datalinker_array = $g_datalinker_object->get ($g_eid); }
+	$g_datalinker_array = ($g_datalinker_object ? $g_datalinker_object->get ($g_eid) : NULL);
 
 	if ((is_array ($g_datalinker_array))&&(direct_class_init ("output")))
 	{

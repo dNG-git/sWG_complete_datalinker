@@ -83,8 +83,7 @@ if (($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs")||
 	$direct_cachedata['output_page'] = (isset ($direct_settings['dsd']['page']) ? ($direct_classes['basic_functions']->inputfilter_number ($direct_settings['dsd']['page'])) : 1);
 	$g_source = (isset ($direct_settings['dsd']['source']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['source'])) : "");
 
-	if ($g_source) { $g_source_url = base64_decode ($g_source); }
-	else { $g_source_url = "m=datalinker&a=view&dsd=[oid]"; }
+	$g_source_url = ($g_source ? base64_decode ($g_source) : "m=datalinker&a=view&dsd=[oid]");
 
 	if ((isset ($direct_settings['dsd']['dtheme']))&&($direct_settings['dsd']['dtheme']))
 	{
@@ -135,13 +134,11 @@ if (($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs")||
 	if ($g_dtheme_embedded) { direct_output_theme_subtype ("embedded"); }
 
 	direct_class_init ("output");
-	if (($g_dtheme)&&($direct_cachedata['output_options'])) { $direct_classes['output']->options_insert (2,"servicemenu",$direct_cachedata['page_backlink'],(direct_local_get ("core_back")),$direct_settings['serviceicon_default_back'],"url0"); }
+	if (($g_dtheme)&&($direct_cachedata['output_options'])&&($direct_cachedata['page_backlink'])) { $direct_classes['output']->options_insert (2,"servicemenu",$direct_cachedata['page_backlink'],(direct_local_get ("core_back")),$direct_settings['serviceicon_default_back'],"url0"); }
 
-	if (strpos ($g_eid,"u-") === 0) { $g_datalinker_object = new direct_datalinker_uhome (); }
-	else { $g_datalinker_object = new direct_datalinker (); }
+	$g_datalinker_object = ((strpos ($g_eid,"u-") === 0) ? new direct_datalinker_uhome () : new direct_datalinker ());
 
-	if ($g_datalinker_object) { $g_datalinker_array = $g_datalinker_object->get ($g_eid); }
-	else { $g_datalinker_array = NULL; }
+	$g_datalinker_array = ($g_datalinker_object ? $g_datalinker_object->get ($g_eid) : NULL);
 
 	if ($g_datalinker_array)
 	{

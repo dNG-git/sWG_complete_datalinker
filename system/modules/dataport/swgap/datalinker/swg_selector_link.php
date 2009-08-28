@@ -151,9 +151,7 @@ case "list":
 		$g_datalinker_cache = direct_tmp_storage_get ("evars",$direct_settings['uuid'],"4c6924b0583e6882d3db6aff277bfc3e","link_cache");
 		// md5 ("datalinker")
 
-		if (($g_datalinker_cache)&&(isset ($g_datalinker_cache['datalinker_objects_selected']))&&(is_array ($g_datalinker_cache['datalinker_objects_selected']))) { $g_objects_selected_array = array_values ($g_datalinker_cache['datalinker_objects_selected']); }
-		else { $g_objects_selected_array = array (); }
-
+		$g_objects_selected_array = ((($g_datalinker_cache)&&(isset ($g_datalinker_cache['datalinker_objects_selected']))&&(is_array ($g_datalinker_cache['datalinker_objects_selected']))) ? array_values ($g_datalinker_cache['datalinker_objects_selected']) : array ());
 		$g_objects_count = count ($g_objects_selected_array);
 
 		if ((isset ($g_task_array['datalinker_link_selection_automark_one']))&&($g_task_array['datalinker_link_selection_automark_one'])&&($g_objects_count == 1)&&(!in_array ($g_objects_selected_array[0],$g_task_array['datalinker_link_objects_marked']))) { $direct_classes['output']->redirect (direct_linker ("url1","m=dataport&s=swgap;datalinker;selector_link&a=mark_switch&dsd=dtheme+{$direct_cachedata['output_dtheme_mode']}++deid+{$g_objects_selected_array[0]}++tid+{$direct_cachedata['output_tid']}++page+".$direct_cachedata['output_page'],false)); }
@@ -200,23 +198,14 @@ case "list":
 						{
 							$f_service_array = $f_service_array['services'][$g_object_array['ddbdatalinker_type']];
 							$g_result_selected = direct_datalinker_iviewer ($f_service_array,$g_datalinker_object);
-
 							$g_result_selected['marked'] = in_array ($g_object_array['ddbdatalinker_id'],$g_task_array['datalinker_link_objects_marked']);
 
 							if ((isset ($g_task_array['datalinker_link_selection_quantity']))&&($g_task_array['datalinker_link_selection_quantity']))
 							{
 								$g_result_selected['pageurl_marker'] = direct_linker ("url0","m=dataport&s=swgap;datalinker;selector_link&a=mark_switch&dsd=dtheme+{$direct_cachedata['output_dtheme_mode']}++deid+{$g_object_array['ddbdatalinker_id']}++tid+{$direct_cachedata['output_tid']}++page+".$direct_cachedata['output_page']);
 
-								if ($g_result_selected['marked'])
-								{
-									if (isset ($g_task_array['datalinker_link_marker_title_1'])) { $g_result_selected['marker_title'] = $g_task_array['datalinker_link_marker_title_1']; }
-									else { $g_result_selected['marker_title'] = direct_local_get ("datalinker_object_unmark"); }
-								}
-								else
-								{
-									if (isset ($g_task_array['datalinker_link_marker_title_0'])) { $g_result_selected['marker_title'] = $g_task_array['datalinker_link_marker_title_0']; }
-									else { $g_result_selected['marker_title'] = direct_local_get ("datalinker_object_mark"); }
-								}
+								if ($g_result_selected['marked']) { $g_result_selected['marker_title'] = ((isset ($g_task_array['datalinker_link_marker_title_1'])) ? $g_task_array['datalinker_link_marker_title_1'] : direct_local_get ("datalinker_object_unmark")); }
+								else { $g_result_selected['marker_title'] = ((isset ($g_task_array['datalinker_link_marker_title_0'])) ? $g_task_array['datalinker_link_marker_title_0'] : direct_local_get ("datalinker_object_mark")); }
 							}
 
 							$direct_cachedata['output_objects'][] = $g_result_selected;
@@ -226,8 +215,7 @@ case "list":
 			}
 		}
 
-		if ((isset ($g_task_array['datalinker_link_selection_title']))&&($g_task_array['datalinker_link_selection_title'])) { $direct_cachedata['output_title'] = $g_task_array['datalinker_link_selection_title']; }
-		else { $direct_cachedata['output_title'] = direct_local_get ("datalinker_entries_selector"); }
+		$direct_cachedata['output_title'] = (((isset ($g_task_array['datalinker_link_selection_title']))&&($g_task_array['datalinker_link_selection_title'])) ? $g_task_array['datalinker_link_selection_title'] : direct_local_get ("datalinker_entries_selector"));
 
 		if ($g_dtheme)
 		{
@@ -335,13 +323,10 @@ case "mark_switch":
 
 	if ($g_continue_check)
 	{
-		if (strpos ($g_eid,"u-") === 0) { $g_datalinker_object = new direct_datalinker_uhome (); }
-		else { $g_datalinker_object = new direct_datalinker (); }
-
-		if ($g_datalinker_object) { $g_datalinker_array = $g_datalinker_object->get ($g_eid); }
-		else { $g_datalinker_array = NULL; }
-
 		$g_continue_check = false;
+		$g_datalinker_object = ((strpos ($g_eid,"u-") === 0) ? new direct_datalinker_uhome () : new direct_datalinker ());
+
+		$g_datalinker_array = ($g_datalinker_object ? $g_datalinker_object->get ($g_eid) : NULL);
 
 		if ($g_datalinker_array)
 		{
@@ -351,7 +336,6 @@ case "mark_switch":
 			{
 				$g_service_array = $g_service_array['services'][$g_datalinker_array['ddbdatalinker_type']];
 				$g_datalinker_array = direct_datalinker_iviewer ($g_service_array,$g_datalinker_object);
-
 				if ($g_datalinker_array) { $g_continue_check = $g_datalinker_array['object_available']; }
 			}
 		}

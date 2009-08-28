@@ -62,8 +62,7 @@ all development packets)
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-$g_continue_check = true;
-if (defined ("CLASS_direct_datalinker_uhome")) { $g_continue_check = false; }
+$g_continue_check = ((defined ("CLASS_direct_datalinker_uhome")) ? false : true);
 if (!defined ("CLASS_direct_datalinker")) { $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/dhandler/swg_datalinker.php"); }
 if (!defined ("CLASS_direct_datalinker")) { $g_continue_check = false; }
 

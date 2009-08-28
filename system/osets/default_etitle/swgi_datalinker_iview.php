@@ -354,6 +354,7 @@ function direct_datalinker_oset_iview_url ($f_url,$f_eid,$f_hide = false)
 
 	$f_ajax_call = addslashes (direct_linker ("url0","m=dataport&s=ajax;datalinker;iview&a=content&dsd=deid+[f_id]++tid+".$f_eid,false));
 	$f_ajax_call_url0 = addslashes (direct_linker ("url0","[f_url]",false));
+	$f_ajax_url = str_replace ("&","&amp;",$f_url);
 
 $f_return = ("<script language='JavaScript1.5' type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
@@ -390,7 +391,7 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 $f_return .= ("<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href='".(direct_linker ("url0",$f_url."++dtheme+1"))."' target='_self'>".(direct_local_get ("core_datasub_title_link_default"))."</a></p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
-	if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_{$f_eid}_call_url0('$f_url');\\\">".(direct_local_get ("core_datasub_title_link_default"))."</a></p>\",'swgAJAX_datalinker_iview_{$f_eid}_point'); }
+	if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_{$f_eid}_call_url0('$f_ajax_url');\\\">".(direct_local_get ("core_datasub_title_link_default"))."</a></p>\",'swgAJAX_datalinker_iview_{$f_eid}_point'); }
 }
 ]]></script>");
 	}
@@ -400,7 +401,7 @@ $f_return .= ("<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pageconten
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'>".(direct_local_get ("core_datasub_loading","text"))."</p>\",'swgAJAX_datalinker_iview_{$f_eid}_point');
-	djs_var['core_run_onload'].push (\"djs_dataport_{$f_eid}_call_url0 ('$f_url')\");
+	djs_var['core_run_onload'].push (\"djs_dataport_{$f_eid}_call_url0 ('$f_ajax_url')\");
 }
 ]]></script>");
 	}

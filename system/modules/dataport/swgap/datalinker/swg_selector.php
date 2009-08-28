@@ -84,8 +84,7 @@ case "preselect":
 	$g_source = (isset ($direct_settings['dsd']['source']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['source'])) : "");
 	$g_target = (isset ($direct_settings['dsd']['target']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['target'])) : "");
 
-	if ($g_source) { $g_source_url = base64_decode ($g_source); }
-	else { $g_source_url = "m=datalinker&a=view&dsd=[oid]"; }
+	$g_source_url = ($g_source ? base64_decode ($g_source) : "m=datalinker&a=view&dsd=[oid]");
 
 	if ($g_target) { $g_target_url = base64_decode ($g_target); }
 	else
@@ -143,13 +142,10 @@ case "preselect":
 	direct_class_init ("output");
 	if (($g_dtheme)&&($direct_cachedata['page_backlink'])) { $direct_classes['output']->options_insert (2,"servicemenu",$direct_cachedata['page_backlink'],(direct_local_get ("core_back")),$direct_settings['serviceicon_default_back'],"url0"); }
 
-	if (strpos ($g_eid,"u-") === 0) { $g_datalinker_object = new direct_datalinker_uhome (); }
-	else { $g_datalinker_object = new direct_datalinker (); }
-
-	if ($g_datalinker_object) { $g_datalinker_array = $g_datalinker_object->get ($g_eid); }
-	else { $g_datalinker_array = NULL; }
-
 	$g_continue_check = false;
+	$g_datalinker_object = ((strpos ($g_eid,"u-") === 0) ? new direct_datalinker_uhome () : new direct_datalinker ());
+
+	$g_datalinker_array = ($g_datalinker_object ? $g_datalinker_object->get ($g_eid) : NULL);
 
 	if ($g_datalinker_array)
 	{
@@ -159,7 +155,6 @@ case "preselect":
 		{
 			$g_service_array = $g_service_array['services'][$g_datalinker_array['ddbdatalinker_type']];
 			$g_datalinker_array = direct_datalinker_iviewer ($g_service_array,$g_datalinker_object);
-
 			if ($g_datalinker_array) { $g_continue_check = $g_datalinker_array['object_available']; }
 		}
 	}

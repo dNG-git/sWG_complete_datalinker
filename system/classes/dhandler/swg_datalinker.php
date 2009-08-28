@@ -62,11 +62,10 @@ all development packets)
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-$f_continue_check = true;
-if (defined ("CLASS_direct_datalinker")) { $f_continue_check = false; }
-if (!defined ("CLASS_direct_data_handler")) { $f_continue_check = false; }
+$g_continue_check = ((defined ("CLASS_direct_datalinker")) ? false : true);
+if (!defined ("CLASS_direct_data_handler")) { $g_continue_check = false; }
 
-if ($f_continue_check)
+if ($g_continue_check)
 {
 //c// direct_datalinker
 /**
@@ -226,9 +225,7 @@ Set up an additional variables :)
 		{
 			$this->data['ddbdatalinker_objects'] += $f_count;
 			$this->data_changed['ddbdatalinker_objects'] = true;
-
-			if ($f_update) { $f_return = $this->update (false,true); }
-			else { $f_return = true; }
+			$f_return = ($f_update ? $this->update (false,true) : true);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->add_objects ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -255,9 +252,7 @@ Set up an additional variables :)
 		{
 			$this->data['ddbdatalinker_subs'] += $f_count;
 			$this->data_changed['ddbdatalinker_subs'] = true;
-
-			if ($f_update) { $f_return = $this->update (false,true); }
-			else { $f_return = true; }
+			$f_return = ($f_update ? $this->update (false,true) : true);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->add_subs ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -284,9 +279,7 @@ Set up an additional variables :)
 		{
 			$this->data['ddbdatalinker_views'] += $f_count;
 			$this->data_changed['ddbdatalinker_views'] = true;
-
-			if ($f_update) { $f_return = $this->update (false,true); }
-			else { $f_return = true; }
+			$f_return = ($f_update ? $this->update (false,true) : true);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->add_views ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -351,14 +344,12 @@ Set up an additional variables :)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->define_extra_attributes (+f_data,+f_onetime)- (#echo(__LINE__)#)"); }
 
-		if ((is_array ($f_data))&&(!empty ($f_data))) { $f_attributes_array = $f_data; }
-		else { $f_attributes_array = array ($f_data); }
+		$f_attributes_array = ((is_array ($f_data)) ? $f_data : array ($f_data));
 
 		if (empty ($f_attributes_array)) { $this->data_extra_attributes = array (); }
 		elseif (!empty ($f_attributes_array))
 		{
-			if ($f_onetime) { $f_onetime = true; }
-			else { $f_onetime = false; }
+			$f_onetime = ($f_onetime ? true : false);
 
 			foreach ($f_attributes_array as $f_attribute)
 			{
@@ -383,14 +374,12 @@ Set up an additional variables :)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->define_extra_conditions (+f_data,+f_onetime)- (#echo(__LINE__)#)"); }
 
-		if ((is_array ($f_data))&&(!empty ($f_data))) { $f_conditions_array = $f_data; }
-		else { $f_conditions_array = array ($f_data); }
+		$f_conditions_array = ((is_array ($f_data)) ? $f_data : array ($f_data));
 
 		if (empty ($f_conditions_array)) { $this->data_extra_conditions = array (); }
 		elseif (!empty ($f_conditions_array))
 		{
-			if ($f_onetime) { $f_onetime = true; }
-			else { $f_onetime = false; }
+			$f_onetime = ($f_onetime ? true : false);
 
 			foreach ($f_conditions_array as $f_condition)
 			{
@@ -417,10 +406,9 @@ Set up an additional variables :)
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->define_extra_joins (+f_data,+f_onetime)- (#echo(__LINE__)#)"); }
 
 		if (empty ($f_data)) { $this->data_extra_joins = array (); }
-		elseif (!empty ($f_data))
+		elseif (is_array ($f_data))
 		{
-			if ($f_onetime) { $f_onetime = true; }
-			else { $f_onetime = false; }
+			$f_onetime = ($f_onetime ? true : false);
 
 			foreach ($f_data as $f_join_array)
 			{
@@ -452,8 +440,8 @@ Set up an additional variables :)
 			elseif (($f_state === NULL)&&(!$this->data['ddbdatalinker_datasubs_new'])) { $f_return = true; }
 		}
 
-		if ($f_return) { $this->data['ddbdatalinker_datasubs_new'] = 1; }
-		else { $this->data['ddbdatalinker_datasubs_new'] = 0; }
+		$this->data['ddbdatalinker_datasubs_new'] = ($f_return ? 1 : 0);
+		$this->data_changed['ddbdatalinker_datasubs_new'] = true;
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->define_subs_allowed ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -480,8 +468,8 @@ Set up an additional variables :)
 			elseif (($f_state === NULL)&&(!$this->data['ddbdatalinker_views_count'])) { $f_return = true; }
 		}
 
-		if ($f_return) { $this->data['ddbdatalinker_views_count'] = 1; }
-		else { $this->data['ddbdatalinker_views_count'] = 0; }
+		$this->data['ddbdatalinker_views_count'] = ($f_return ? 1 : 0);
+		$this->data_changed['ddbdatalinker_views_count'] = true;
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->define_views_count ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -676,7 +664,7 @@ Set up an additional variables :)
 
 				if ($this->data)
 				{
-					if (($this->data['ddbdatalinker_datasubs_type'] !== NULL)&&(($this->data['ddbdatalinker_datasubs_new'])||($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type']) > 3))) { $this->data_subs_allowed = true; }
+					if (($direct_settings['user']['type'] != "gt")&&($this->data['ddbdatalinker_datasubs_type'] !== NULL)&&(($this->data['ddbdatalinker_datasubs_new'])||($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type']) > 3))) { $this->data_subs_allowed = true; }
 					else { $this->data_subs_allowed = false; }
 
 					$f_return = $this->data;
@@ -746,9 +734,7 @@ Set up an additional variables :)
 				foreach ($f_xml_array['swg_datalinker_subs_list_v1_datalinker_services'] as $f_xml_node_array)
 				{
 					$this->data_sid_type_table[$f_xml_node_array['attributes']['sid']] = array ("name" => $f_xml_node_array['attributes']['name'],"services" => array ());
-
-					if (isset ($f_xml_node_array['attributes']['handler'])) { $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['handler'] = $f_xml_node_array['attributes']['handler']; }
-					else { $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['handler'] = $f_xml_node_array['attributes']['name']; }
+					$this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['handler'] = ((isset ($f_xml_node_array['attributes']['handler'])) ? $f_xml_node_array['attributes']['handler'] : $f_xml_node_array['attributes']['name']);
 
 					foreach ($f_default_types_keys as $f_default_types_key)
 					{
@@ -763,18 +749,14 @@ Set up an additional variables :)
 						if (isset ($f_xml_array[$f_sid_types_key]['tag']))
 						{
 							$this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_array[$f_sid_types_key]['attributes']['type']] = array ("name" => $f_xml_array[$f_sid_types_key]['attributes']['name'],"action" => $f_xml_array[$f_sid_types_key]['attributes']['action'],"symbol" => $f_xml_array[$f_sid_types_key]['attributes']['symbol']);
-
-							if (isset ($f_xml_array[$f_sid_types_key]['attributes']['handler'])) { $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_array[$f_sid_types_key]['attributes']['type']]['handler'] = $f_xml_array[$f_sid_types_key]['attributes']['handler']; }
-							else { $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_array[$f_sid_types_key]['attributes']['type']]['handler'] = $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['handler']; }
+							$this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_array[$f_sid_types_key]['attributes']['type']]['handler'] = ((isset ($f_xml_array[$f_sid_types_key]['attributes']['handler'])) ? $f_xml_array[$f_sid_types_key]['attributes']['handler'] : $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['handler']);
 						}
 						else
 						{
 							foreach ($f_xml_array[$f_sid_types_key] as $f_xml_sub_node_array)
 							{
 								$this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_sub_node_array['attributes']['type']] = array ("name" => $f_xml_sub_node_array['attributes']['name'],"action" => $f_xml_sub_node_array['attributes']['action'],"symbol" => $f_xml_sub_node_array['attributes']['symbol']);
-
-								if (isset ($f_xml_sub_node_array['attributes']['handler'])) { $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_sub_node_array['attributes']['type']]['handler'] = $f_xml_sub_node_array['attributes']['handler']; }
-								else { $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_sub_node_array['attributes']['type']]['handler'] = $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['handler']; }
+								$this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['services'][$f_xml_sub_node_array['attributes']['type']]['handler'] = ((isset ($f_xml_sub_node_array['attributes']['handler'])) ? $f_xml_sub_node_array['attributes']['handler'] : $this->data_sid_type_table[$f_xml_node_array['attributes']['sid']]['handler']);
 							}
 						}
 					}
@@ -883,34 +865,33 @@ Set up an additional variables :)
 		$f_select_criteria .= "</sqlconditions>";
 		$direct_classes['db']->define_row_conditions ($f_select_criteria);
 
-		if ($f_highest_first) { $f_select_criteria = "desc"; }
-		else { $f_select_criteria = "asc"; }
+		$f_select_ordering = ($f_highest_first ? "desc" : "asc");
 
 		if (!empty ($this->data_custom_sorting))
 		{
-			$f_select_criteria = $this->data_custom_sorting['definition'];
+			$f_select_ordering = $this->data_custom_sorting['definition'];
 			if ($this->data_custom_sorting['onetime']) { $this->data_custom_sorting = array (); }
 		}
 		elseif ($f_sorting_date_preferred)
 		{
-$f_select_criteria = ("<sqlordering>
-<element1 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='$f_select_criteria' />
-<element2 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='$f_select_criteria' />
+$f_select_ordering = ("<sqlordering>
+<element1 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='$f_select_ordering' />
+<element2 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='$f_select_ordering' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
 <element4 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_title' type='asc' />
 </sqlordering>");
 		}
 		else
 		{
-$f_select_criteria = ("<sqlordering>
-<element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='$f_select_criteria' />
-<element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='$f_select_criteria' />
+$f_select_ordering = ("<sqlordering>
+<element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='$f_select_ordering' />
+<element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='$f_select_ordering' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
 <element4 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_title' type='asc' />
 </sqlordering>");
 		}
 
-		$direct_classes['db']->define_ordering ($f_select_criteria);
+		$direct_classes['db']->define_ordering ($f_select_ordering);
 		$f_results_array = $direct_classes['db']->query_exec ("ma");
 
 		$f_toplevel_id = "";
@@ -975,9 +956,7 @@ $f_select_criteria = ("<sqlordering>
 
 		foreach ($f_parent_objects as $f_element_array)
 		{
-			if (strlen ($f_parent_prefix)) { $f_structure_key = $f_parent_prefix.":".$f_element_array['ddbdatalinker_id']; }
-			else { $f_structure_key = $f_element_array['ddbdatalinker_id']; }
-
+			$f_structure_key = ((strlen ($f_parent_prefix)) ? $f_parent_prefix.":".$f_element_array['ddbdatalinker_id'] : $f_element_array['ddbdatalinker_id']);
 			if ($f_objects_structured) { $f_objects_structured .= "\n"; }
 			$f_objects_structured .= $f_structure_key;
 
@@ -1081,8 +1060,7 @@ $f_select_criteria = ("<sqlordering>
 		{
 			$direct_classes['db']->init_select ($direct_settings['datalinker_table']);
 
-			if ($f_datalinker_object) { $f_select_attributes = array ($direct_settings['datalinker_table'].".*",$direct_settings['datalinkerd_table'].".*"); }
-			else { $f_select_attributes = array (); }
+			$f_select_attributes = ($f_datalinker_object ? array ($direct_settings['datalinker_table'].".*",$direct_settings['datalinkerd_table'].".*") : array ());
 
 			if (!empty ($this->data_extra_attributes))
 			{
@@ -1125,7 +1103,7 @@ $f_select_criteria = ("<sqlordering>
 
 			if (!empty ($this->data_custom_sorting))
 			{
-				$f_select_criteria = $this->data_custom_sorting['definition'];
+				$f_select_ordering = $this->data_custom_sorting['definition'];
 				if ($this->data_custom_sorting['onetime']) { $this->data_custom_sorting = array (); }
 			}
 			else
@@ -1134,12 +1112,12 @@ $f_select_criteria = ("<sqlordering>
 				{
 				case "id-desc":
 				{
-					$f_select_criteria = "<sqlordering><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id' type='desc' /></sqlordering>";
+					$f_select_ordering = "<sqlordering><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id' type='desc' /></sqlordering>";
 					break 1;
 				}
 				case "position-asc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='asc' />
 <element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='asc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
@@ -1150,7 +1128,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "position-desc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='desc' />
 <element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='desc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
@@ -1161,7 +1139,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "time-asc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='asc' />
 <element2 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='asc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
@@ -1172,7 +1150,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "time-desc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='desc' />
 <element2 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='asc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
@@ -1183,7 +1161,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "time-sticky-asc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='desc' />
 <element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='asc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
@@ -1194,7 +1172,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "time-sticky-desc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='desc' />
 <element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_sorting_date' type='desc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
@@ -1205,7 +1183,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "title-asc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
 <element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_title' type='asc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='asc' />
@@ -1216,7 +1194,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "title-desc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='desc' />
 <element2 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_title' type='desc' />
 <element3 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='asc' />
@@ -1227,7 +1205,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "title-sticky-asc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='desc' />
 <element2 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='asc' />
 <element3 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_title' type='asc' />
@@ -1238,7 +1216,7 @@ $f_select_criteria = ("<sqlordering>
 				}
 				case "title-sticky-desc":
 				{
-$f_select_criteria = ("<sqlordering>
+$f_select_ordering = ("<sqlordering>
 <element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_position' type='desc' />
 <element2 attribute='$direct_settings[datalinker_table].ddbdatalinker_title_alt' type='desc' />
 <element3 attribute='$direct_settings[datalinkerd_table].ddbdatalinker_title' type='desc' />
@@ -1247,13 +1225,13 @@ $f_select_criteria = ("<sqlordering>
 
 					break 1;
 				}
-				default: { $f_select_criteria = "<sqlordering><element1 attribute='$direct_settings[datalinkerd_table].ddbdatalinkerd_id' type='asc' /></sqlordering>"; }
+				default: { $f_select_ordering = "<sqlordering><element1 attribute='$direct_settings[datalinkerd_table].ddbdatalinkerd_id' type='asc' /></sqlordering>"; }
 				}
 			}
 
 			if ($f_datalinker_object)
 			{
-				$direct_classes['db']->define_ordering ($f_select_criteria);
+				$direct_classes['db']->define_ordering ($f_select_ordering);
 
 				if (is_numeric ($f_perpage))
 				{
@@ -1265,17 +1243,13 @@ $f_select_criteria = ("<sqlordering>
 			if ($f_datalinker_object)
 			{
 				$f_results_array = $direct_classes['db']->query_exec ("ma");
-
-				if ((is_array ($f_options))&&($f_options)) { $f_continue_check = true; }
-				else { $f_continue_check = false; }
+				$f_continue_check = (((is_array ($f_options))&&($f_options)) ? true : false);
 
 				if ($f_results_array)
 				{
 					foreach ($f_results_array as $f_result_array)
 					{
-						if ($f_continue_check) { $f_return[$f_result_array['ddbdatalinker_id']] = new $f_datalinker_object ($f_options); }
-						else { $f_return[$f_result_array['ddbdatalinker_id']] = new $f_datalinker_object (); }
-
+						$f_return[$f_result_array['ddbdatalinker_id']] = ($f_continue_check ? new $f_datalinker_object ($f_options) : new $f_datalinker_object ());
 						if (!$f_return[$f_result_array['ddbdatalinker_id']]->set ($f_result_array)) { unset ($f_return[$f_result_array['ddbdatalinker_id']]); }
 					}
 				}
@@ -1453,10 +1427,7 @@ $f_select_criteria = ("<sqlordering>
 			$f_return[$f_prefix."title_alt"] = direct_html_encode_special ($this->data['ddbdatalinker_title_alt']);
 			$f_return[$f_prefix."objects"] = $this->data['ddbdatalinker_objects'];
 			$f_return[$f_prefix."subs"] = $this->data['ddbdatalinker_subs'];
-		
-			if ($this->data['ddbdatalinker_subs'] > 0) { $f_return[$f_prefix."subs_available"] = true; }
-			else { $f_return[$f_prefix."subs_available"] = false; }
-
+			$f_return[$f_prefix."subs_available"] = (($this->data['ddbdatalinker_subs'] > 0) ? true : false);
 			$f_return[$f_prefix."subs_id"] = $f_id_safe;
 			$f_return[$f_prefix."subs_title"] = "";
 			$f_return[$f_prefix."subs_link_title"] = "";
@@ -1535,9 +1506,7 @@ $f_select_criteria = ("<sqlordering>
 		{
 			$this->data['ddbdatalinker_objects'] -= $f_count;
 			$this->data_changed['ddbdatalinker_objects'] = true;
-
-			if ($f_update) { $f_return = $this->update (false,true); }
-			else { $f_return = true; }
+			$f_return = ($f_update ? $this->update (false,true) : true);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->remove_objects ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -1564,9 +1533,7 @@ $f_select_criteria = ("<sqlordering>
 		{
 			$this->data['ddbdatalinker_subs'] -= $f_count;
 			$this->data_changed['ddbdatalinker_subs'] = true;
-
-			if ($f_update) { $f_return = $this->update (false,true); }
-			else { $f_return = true; }
+			$f_return = ($f_update ? $this->update (false,true) : true);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->remove_subs ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -1593,9 +1560,7 @@ $f_select_criteria = ("<sqlordering>
 		{
 			$this->data['ddbdatalinker_views'] -= $f_count;
 			$this->data_changed['ddbdatalinker_views'] = true;
-
-			if ($f_update) { $f_return = $this->update (false,true); }
-			else { $f_return = true; }
+			$f_return = ($f_update ? $this->update (false,true) : true);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->remove_views ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -1795,9 +1760,7 @@ $this->data = array (
 		{
 			$this->data['ddbdatalinker_sorting_date'] = $f_datetime;
 			$this->data_changed['ddbdatalinker_sorting_date'] = true;
-
-			if ($f_update) { $f_return = $this->update (false,true); }
-			else { $f_return = true; }
+			$f_return = ($f_update ? $this->update (false,true) : true);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->set_sorting_date ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
