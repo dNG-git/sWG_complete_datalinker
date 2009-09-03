@@ -795,7 +795,7 @@ Set up an additional variables :)
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->get_sid ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_datalinker->get_structure ($f_sid = "",$f_type = "",$f_highest_first = true,$f_sorting_date_preferred = false)
+	//f// direct_datalinker->get_structure ($f_sid = "",$f_type = NULL,$f_highest_first = true,$f_sorting_date_preferred = false)
 /**
 	* Returns an array containing the object list for the main ID and a structured
 	* string.
@@ -818,10 +818,10 @@ Set up an additional variables :)
 	*         level object structure (string "structure" - ":" is delimiter)
 	* @since  v0.1.00
 */
-	public function get_structure ($f_sid = "",$f_type = "",$f_highest_first = true,$f_sorting_date_preferred = false)
+	public function get_structure ($f_sid = "",$f_type = NULL,$f_highest_first = true,$f_sorting_date_preferred = false)
 	{
 		global $direct_classes,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->get_structure ($f_sid,$f_type,+f_highest_first,+f_sorting_date_preferred)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->get_structure ($f_sid,+f_type,+f_highest_first,+f_sorting_date_preferred)- (#echo(__LINE__)#)"); }
 
 		$f_return = array ();
 		$f_select_attributes = array ($direct_settings['datalinker_table'].".*",$direct_settings['datalinkerd_table'].".*");
@@ -851,7 +851,15 @@ Set up an additional variables :)
 
 		$f_select_criteria = "<sqlconditions>".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_main",$this->data['ddbdatalinker_id_main'],"string"));
 		if (strlen ($f_sid)) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_sid",$f_sid,"string"); }
-		if (strlen ($f_type)) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_type",(md5 ($f_type)),"string"); }
+
+		if ((is_string ($f_type))&&(strlen ($f_type))) { $f_type = array ($f_type); }
+
+		if (is_array ($f_type))
+		{
+			$f_select_criteria .= "<sub1 type='sublevel'>";
+			foreach ($f_type as $f_type_entry) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_type",$f_type_entry,"number","==","or"); }
+			$f_select_criteria .= "</sub1>";
+		}
 
 		if (!empty ($this->data_extra_conditions))
 		{
