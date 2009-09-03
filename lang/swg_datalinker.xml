@@ -7,7 +7,11 @@
   <selector><preselect><input input="string" /></preselect></selector>
  </done>
 
- <entry><select><input input="string" /></select></entry>
+ <entry>
+  <new><input input="string" /></new>
+  <select><input input="string" /></select>
+ </entry>
+
  <entries><selector><input input="string" /></selector></entries>
 
  <object>
