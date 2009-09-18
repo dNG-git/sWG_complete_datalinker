@@ -156,6 +156,8 @@ Informing the system about available functions
 		$this->functions['add_objects'] = true;
 		$this->functions['add_subs'] = true;
 		$this->functions['add_views'] = true;
+		$this->functions['data_changed_get'] = true;
+		$this->functions['data_changed_reset'] = true;
 		$this->functions['define_custom_sorting'] = true;
 		$this->functions['define_extra_attributes'] = true;
 		$this->functions['define_extra_conditions'] = true;
@@ -308,6 +310,35 @@ Set up an additional variables :)
 				if ((!array_key_exists ($f_data_key,$this->data))||($f_data[$f_data_key] != $this->data[$f_data_key])) { $this->data_changed[$f_data_key] = true; }
 			}
 		}
+	}
+
+	//f// direct_datalinker->data_changed_get ()
+/**
+	* Returns all data changed with the "set ()" call.
+	*
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return array Changed entries
+	* @since  v0.1.00
+*/
+	public function data_changed_get ()
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->data_changed_get ()- (#echo(__LINE__)#)"); }
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->data_changed_get ()- (#echo(__LINE__)#)",:#*/$this->data_changed/*#ifdef(DEBUG):,true):#*/;
+	}
+
+	//f// direct_datalinker->data_changed_reset ()
+/**
+	* Resets the internal list of changed attributes. Use with caution.
+	*
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @since  v0.1.00
+*/
+	public function data_changed_reset ()
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->data_changed_reset ()- (#echo(__LINE__)#)"); }
+		$this->data_changed = array ();
 	}
 
 	//f// direct_datalinker->define_custom_sorting ($f_data)
@@ -1647,26 +1678,10 @@ $f_select_ordering = ("<sqlordering>
 				$this->data_changed['ddbdatalinker_views'] = true;
 			}
 
-$this->data = array (
-"ddbdatalinker_id" => $f_data['ddbdatalinker_id'],
-"ddbdatalinker_id_object" => $f_data['ddbdatalinker_id_object'],
-"ddbdatalinker_id_parent" => $f_data['ddbdatalinker_id_parent'],
-"ddbdatalinker_id_main" => $f_data['ddbdatalinker_id_main'],
-"ddbdatalinker_sid" => $f_data['ddbdatalinker_sid'],
-"ddbdatalinker_type" => $f_data['ddbdatalinker_type'],
-"ddbdatalinker_position" => $f_data['ddbdatalinker_position'],
-"ddbdatalinker_title_alt" => $f_data['ddbdatalinker_title_alt'],
-"ddbdatalinker_subs" => $f_data['ddbdatalinker_subs'],
-"ddbdatalinker_objects" => $f_data['ddbdatalinker_objects'],
-"ddbdatalinker_sorting_date" => $f_data['ddbdatalinker_sorting_date'],
-"ddbdatalinker_symbol" => $f_data['ddbdatalinker_symbol'],
-"ddbdatalinker_title" => $f_data['ddbdatalinker_title'],
-"ddbdatalinker_datasubs_type" => $f_data['ddbdatalinker_datasubs_type'],
-"ddbdatalinker_datasubs_hide" => $f_data['ddbdatalinker_datasubs_hide'],
-"ddbdatalinker_datasubs_new" => $f_data['ddbdatalinker_datasubs_new'],
-"ddbdatalinker_views_count" => $f_data['ddbdatalinker_views_count'],
-"ddbdatalinker_views" => $f_data['ddbdatalinker_views']
-);
+$f_attributes = array ("ddbdatalinker_id","ddbdatalinker_id_object","ddbdatalinker_id_parent","ddbdatalinker_id_main","ddbdatalinker_sid","ddbdatalinker_type","ddbdatalinker_position","ddbdatalinker_title_alt",
+"ddbdatalinker_subs","ddbdatalinker_objects","ddbdatalinker_sorting_date","ddbdatalinker_symbol","ddbdatalinker_title","ddbdatalinker_datasubs_type","ddbdatalinker_datasubs_hide","ddbdatalinker_datasubs_new","ddbdatalinker_views_count","ddbdatalinker_views");
+
+			$this->set_extras ($f_data,$f_attributes);
 
 			if (($this->data['ddbdatalinker_datasubs_type'] !== NULL)&&(($f_data['ddbdatalinker_datasubs_new'])||($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type']) > 3))) { $this->data_subs_allowed = true; }
 			else { $this->data_subs_allowed = false; }
