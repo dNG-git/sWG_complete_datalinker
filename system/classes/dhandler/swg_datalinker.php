@@ -106,6 +106,11 @@ class direct_datalinker extends direct_data_handler
 */
 	protected $data_extra_joins;
 /**
+	* @var array $data_extra_search_conditions Additional search conditions for
+	*      SQL queries
+*/
+	protected $data_extra_search_conditions;
+/**
 	* @var string $data_sid SID of this DataLinker object
 */
 	protected $data_sid;
@@ -162,6 +167,7 @@ Informing the system about available functions
 		$this->functions['define_extra_attributes'] = true;
 		$this->functions['define_extra_conditions'] = true;
 		$this->functions['define_extra_joins'] = true;
+		$this->functions['define_extra_search_conditions'] = true;
 		$this->functions['define_subs_allowed'] = true;
 		$this->functions['define_views_count'] = true;
 		$this->functions['delete'] = true;
@@ -199,6 +205,7 @@ Set up an additional variables :)
 		$this->data_extra_attributes = array ();
 		$this->data_extra_conditions = array ();
 		$this->data_extra_joins = array ();
+		$this->data_extra_search_conditions = array ();
 		$this->data_insert_mode = false;
 		$this->data_sid = NULL;
 		$this->data_sid_type_table = array ();
@@ -364,7 +371,7 @@ Set up an additional variables :)
 	* Defines additional attributes for this DataLinker.
 	*
 	* @param  mixed $f_data String (one) or array (multiple) new attributes to
-	*         provide.  
+	*         provide.
 	* @param  boolean $f_onetime True to use the given attributes only for the
 	*         next request.
 	* @uses   direct_debug()
@@ -393,8 +400,8 @@ Set up an additional variables :)
 /**
 	* Defines additional conditions for this DataLinker.
 	*
-	* @param  mixed $f_data String (one) or array (multiple) new attributes to
-	*         provide.  
+	* @param  mixed $f_data String (one) or array (multiple) new conditions to
+	*         provide.
 	* @param  boolean $f_onetime True to use the given attributes only for the
 	*         next request.
 	* @uses   direct_debug()
@@ -424,8 +431,8 @@ Set up an additional variables :)
 /**
 	* Defines additional "JOIN" statements for this DataLinker.
 	*
-	* @param  mixed $f_data String (one) or array (multiple) new attributes to
-	*         provide.  
+	* @param  mixed $f_data String (one) or array (multiple) new JOIN statements
+	*         to provide.
 	* @param  boolean $f_onetime True to use the given attributes only for the
 	*         next request.
 	* @uses   direct_debug()
@@ -445,6 +452,37 @@ Set up an additional variables :)
 			{
 				$f_join_key = md5 ($f_join_array['type'].$f_join_array['table'].$f_join_array['condition']);
 				if ((!$f_onetime)||(($f_onetime)&&(!isset ($this->data_extra_joins[$f_join_key])))) { $this->data_extra_joins[$f_join_key] = array ("type" => $f_join_array['type'],"table" => $f_join_array['table'],"condition" => $f_join_array['condition'],"onetime" => $f_onetime); }
+			}
+		}
+	}
+
+	//f// direct_datalinker->define_extra_search_conditions ($f_data,$f_onetime = false)
+/**
+	* Defines additional search conditions for this DataLinker.
+	*
+	* @param  mixed $f_data String (one) or array (multiple) new conditions to
+	*         provide.
+	* @param  boolean $f_onetime True to use the given attributes only for the
+	*         next request.
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @since  v0.1.00
+*/
+	protected function define_extra_search_conditions ($f_data,$f_onetime = true)
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->define_extra_search_conditions (+f_data,+f_onetime)- (#echo(__LINE__)#)"); }
+
+		$f_conditions_array = ((is_array ($f_data)) ? $f_data : array ($f_data));
+
+		if (empty ($f_conditions_array)) { $this->data_extra_search_conditions = array (); }
+		elseif (!empty ($f_conditions_array))
+		{
+			$f_onetime = ($f_onetime ? true : false);
+
+			foreach ($f_conditions_array as $f_condition)
+			{
+				$f_condition_key = md5 ($f_condition);
+				if ((strlen ($f_condition))&&((!$f_onetime)||(($f_onetime)&&(!isset ($this->data_extra_search_conditions[$f_condition_key]))))) { $this->data_extra_search_conditions[$f_condition_key] = array ("condition" => $f_condition,"onetime" => $f_onetime); }
 			}
 		}
 	}
@@ -687,8 +725,20 @@ Set up an additional variables :)
 					}
 				}
 
-				$f_select_criteria .= "</sqlconditions>";
-				$direct_classes['db']->define_row_conditions ($f_select_criteria);
+				$direct_classes['db']->define_row_conditions ($f_select_criteria."</sqlconditions>");
+
+				if (!empty ($this->data_extra_search_conditions))
+				{
+					$f_select_criteria = "<sqlconditions searchtype='advanced'>";
+
+					foreach ($this->data_extra_search_conditions as $f_condition_key => $f_condition_array)
+					{
+						$f_select_criteria .= $f_condition_array['condition'];
+						if ($f_condition_array['onetime']) { unset ($this->data_extra_search_conditions[$f_condition_key]); }
+					}
+
+					$direct_classes['db']->define_search_conditions ($f_select_criteria."</sqlconditions>");
+				}
 
 				$direct_classes['db']->define_limit (1);
 				$this->data = $direct_classes['db']->query_exec ("sa");
@@ -901,8 +951,20 @@ Set up an additional variables :)
 			}
 		}
 
-		$f_select_criteria .= "</sqlconditions>";
-		$direct_classes['db']->define_row_conditions ($f_select_criteria);
+		$direct_classes['db']->define_row_conditions ($f_select_criteria."</sqlconditions>");
+
+		if (!empty ($this->data_extra_search_conditions))
+		{
+			$f_select_criteria = "<sqlconditions searchtype='advanced'>";
+
+			foreach ($this->data_extra_search_conditions as $f_condition_key => $f_condition_array)
+			{
+				$f_select_criteria .= $f_condition_array['condition'];
+				if ($f_condition_array['onetime']) { unset ($this->data_extra_search_conditions[$f_condition_key]); }
+			}
+
+			$direct_classes['db']->define_search_conditions ($f_select_criteria."</sqlconditions>");
+		}
 
 		$f_select_ordering = ($f_highest_first ? "desc" : "asc");
 
@@ -1137,8 +1199,20 @@ $f_select_ordering = ("<sqlordering>
 				}
 			}
 
-			$f_select_criteria .= "</sqlconditions>";
-			$direct_classes['db']->define_row_conditions ($f_select_criteria);
+			$direct_classes['db']->define_row_conditions ($f_select_criteria."</sqlconditions>");
+
+			if (!empty ($this->data_extra_search_conditions))
+			{
+				$f_select_criteria = "<sqlconditions searchtype='advanced'>";
+
+				foreach ($this->data_extra_search_conditions as $f_condition_key => $f_condition_array)
+				{
+					$f_select_criteria .= $f_condition_array['condition'];
+					if ($f_condition_array['onetime']) { unset ($this->data_extra_search_conditions[$f_condition_key]); }
+				}
+
+				$direct_classes['db']->define_search_conditions ($f_select_criteria."</sqlconditions>");
+			}
 
 			if (!empty ($this->data_custom_sorting))
 			{
