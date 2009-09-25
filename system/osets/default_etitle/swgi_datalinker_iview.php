@@ -58,14 +58,15 @@ all development packets)
 
 //j// Functions and classes
 
-//f// direct_datalinker_oset_iview ($f_target,$f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+//f// direct_datalinker_oset_iview ($f_target,$f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 /**
 * direct_datalinker_oset_iview ()
 *
-* @param  string $f_target Target AJAX mode
+* @param  string $f_mode Target AJAX mode
 * @param  array $f_data DataLinker based output data
 * @param  integer $f_embedded_count iViewer elements to show
 * @param  string $f_source Base64 encoded source URL to use as reference
+* @param  string $f_target Base64 encoded target URL to use as reference
 * @param  string $f_view View mode to be used
 * @param  boolean $f_view_options Show iViewer options
 * @param  mixed $f_hide_override True to hide the iView area, NULL to use
@@ -76,18 +77,21 @@ all development packets)
 * @return string Valid XHTML code
 * @since  v0.1.00
 */
-function direct_datalinker_oset_iview ($f_target,$f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+function direct_datalinker_oset_iview ($f_mode,$f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 {
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview ($f_target,+f_data,$f_embedded_count,$f_source,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview ($f_mode,+f_data,$f_embedded_count,+f_source,+f_target,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
 
 	if ((isset ($f_data[$f_prefix."subs_id"]))&&(($f_data[$f_prefix."subs_allowed"])||($f_data[$f_prefix."subs_available"])))
 	{
 		if (!$f_data[$f_prefix."subs"]) { $f_data[$f_prefix."subs"] = 0; }
 
+		$f_source = (((isset ($f_source))&&($f_source)) ? "++source+".(urlencode ($f_source)) : "");
+		$f_target = (((isset ($f_target))&&($f_target)) ? "++target+".(urlencode ($f_target)) : "");
+
 		if ($f_view_options) { $f_view_options_code = "++doptions+1"; }
 		else { $f_view_options_code = "++doptions+0"; }
 
-		$f_ajax_call = addslashes (direct_linker ("url0","m=dataport&s=ajax;datalinker;iview&a=content&dsd=deid+[f_id]++tid+".$f_data[$f_prefix."oid"]."++source+".(urlencode ($f_source)),false));
+		$f_ajax_call = addslashes (direct_linker ("url0","m=dataport&s=ajax;datalinker;iview&a=content&dsd=deid+[f_id]++tid+".$f_data[$f_prefix."oid"].$f_source.$f_target,false));
 		$f_ajax_call_url0 = addslashes (direct_linker ("url0","[f_url]",false));
 
 $f_return = ("<script language='JavaScript1.5' type='text/javascript'><![CDATA[
@@ -122,19 +126,19 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 
 		if ((($f_hide_override === NULL)&&($f_data[$f_prefix."subs_hide"]))||(($f_hide_override !== NULL)&&($f_hide_override)))
 		{
-$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_target}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+{$f_view}{$f_view_options_code}++source+".$f_source))."' target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
-if ((djs_swgAJAX)&&(djs_swgDOM)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_".$f_data[$f_prefix."subs_id"]."_call_url0('m=dataport&amp;s=swgap;datalinker;iview&amp;a=list_{$f_target}&amp;dsd=dtheme+0++deid+".$f_data[$f_prefix."oid"]."++decount+$f_embedded_count++dview+{$f_view}{$f_view_options_code}++source+{$f_source}');\\\" target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p>\",'swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point'); }
+$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_mode}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+".$f_view.$f_view_options_code.$f_source.$f_target))."' target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+if ((djs_swgAJAX)&&(djs_swgDOM)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_".$f_data[$f_prefix."subs_id"]."_call_url0('m=dataport&amp;s=swgap;datalinker;iview&amp;a=list_{$f_mode}&amp;dsd=dtheme+0++deid+".$f_data[$f_prefix."oid"]."++decount+$f_embedded_count++dview+{$f_view}{$f_view_options_code}{$f_source}{$f_target}');\\\" target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p>\",'swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point'); }
 ]]></script>");
 		}
 		else
 		{
-$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'>".(direct_local_get ("core_datasub_error_1"))."<a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_target}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+{$f_view}{$f_view_options_code}++source+".$f_source))."' target='_self'>".(direct_local_get ("core_datasub_error_2"))."</a>".(direct_local_get ("core_datasub_error_3"))."</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'>".(direct_local_get ("core_datasub_error_1"))."<a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_mode}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+".$f_view.$f_view_options_code.$f_source.$f_target))."' target='_self'>".(direct_local_get ("core_datasub_error_2"))."</a>".(direct_local_get ("core_datasub_error_3"))."</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable))
 	{
 		djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'>".(direct_local_get ("core_datasub_loading","text"))."</p>\",'swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point');
-		djs_var['core_run_onload'].push ('djs_dataport_".$f_data[$f_prefix."subs_id"]."_call_url0 (\"m=dataport&s=swgap;datalinker;iview&a=list_{$f_target}&dsd=dtheme+0++deid+".$f_data[$f_prefix."oid"]."++decount+$f_embedded_count++dview+{$f_view}{$f_view_options_code}++source+{$f_source}\")');
+		djs_var['core_run_onload'].push ('djs_dataport_".$f_data[$f_prefix."subs_id"]."_call_url0 (\"m=dataport&s=swgap;datalinker;iview&a=list_{$f_mode}&dsd=dtheme+0++deid+".$f_data[$f_prefix."oid"]."++decount+$f_embedded_count++dview+{$f_view}{$f_view_options_code}{$f_source}{$f_target}\")');
 	}
 }
 ]]></script>");
@@ -264,13 +268,14 @@ function direct_datalinker_oset_iview_list ($f_objects_array,$f_view = "default"
 	return $f_return;
 }
 
-//f// direct_datalinker_oset_iview_mobjects ($f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+//f// direct_datalinker_oset_iview_mobjects ($f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 /**
 * direct_datalinker_oset_iview_mobjects ()
 *
 * @param  array $f_data DataLinker based output data
 * @param  integer $f_embedded_count iViewer elements to show
 * @param  string $f_source Base64 encoded source URL to use as reference
+* @param  string $f_target Base64 encoded target URL to use as reference
 * @param  string $f_view View mode to be used
 * @param  boolean $f_view_options Show iViewer options
 * @param  mixed $f_hide_override True to hide the iView area, NULL to use
@@ -282,19 +287,20 @@ function direct_datalinker_oset_iview_list ($f_objects_array,$f_view = "default"
 * @return string Valid XHTML code
 * @since  v0.1.00
 */
-function direct_datalinker_oset_iview_mobjects ($f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+function direct_datalinker_oset_iview_mobjects ($f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 {
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview_mobjects (+f_data,$f_embedded_count,$f_source,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
-	return direct_datalinker_oset_iview ("mobjects",$f_data,$f_embedded_count,$f_source,$f_view,$f_view_options,$f_hide_override,$f_prefix);
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview_mobjects (+f_data,$f_embedded_count,+f_source,+f_target,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
+	return direct_datalinker_oset_iview ("mobjects",$f_data,$f_embedded_count,$f_source,$f_target,$f_view,$f_view_options,$f_hide_override,$f_prefix);
 }
 
-//f// direct_datalinker_oset_iview_pobjects ($f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+//f// direct_datalinker_oset_iview_pobjects ($f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 /**
 * direct_datalinker_oset_iview_pobjects ()
 *
 * @param  array $f_data DataLinker based output data
 * @param  integer $f_embedded_count iViewer elements to show
 * @param  string $f_source Base64 encoded source URL to use as reference
+* @param  string $f_target Base64 encoded target URL to use as reference
 * @param  string $f_view View mode to be used
 * @param  boolean $f_view_options Show iViewer options
 * @param  mixed $f_hide_override True to hide the iView area, NULL to use
@@ -306,19 +312,20 @@ function direct_datalinker_oset_iview_mobjects ($f_data,$f_embedded_count,$f_sou
 * @return string Valid XHTML code
 * @since  v0.1.00
 */
-function direct_datalinker_oset_iview_pobjects ($f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+function direct_datalinker_oset_iview_pobjects ($f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 {
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview_pobjects (+f_data,$f_embedded_count,$f_source,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
-	return direct_datalinker_oset_iview ("pobjects",$f_data,$f_embedded_count,$f_source,$f_view,$f_view_options,$f_hide_override,$f_prefix);
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview_pobjects (+f_data,$f_embedded_count,+f_source,+f_target,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
+	return direct_datalinker_oset_iview ("pobjects",$f_data,$f_embedded_count,$f_source,$f_target,$f_view,$f_view_options,$f_hide_override,$f_prefix);
 }
 
-//f// direct_datalinker_oset_iview_subs ($f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+//f// direct_datalinker_oset_iview_subs ($f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 /**
 * direct_datalinker_oset_iview_subs ()
 *
 * @param  array $f_data DataLinker based output data
 * @param  integer $f_embedded_count iViewer elements to show
 * @param  string $f_source Base64 encoded source URL to use as reference
+* @param  string $f_target Base64 encoded target URL to use as reference
 * @param  string $f_view View mode to be used
 * @param  boolean $f_view_options Show iViewer options
 * @param  mixed $f_hide_override True to hide the iView area, NULL to use
@@ -330,10 +337,10 @@ function direct_datalinker_oset_iview_pobjects ($f_data,$f_embedded_count,$f_sou
 * @return string Valid XHTML code
 * @since  v0.1.00
 */
-function direct_datalinker_oset_iview_subs ($f_data,$f_embedded_count,$f_source = "",$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
+function direct_datalinker_oset_iview_subs ($f_data,$f_embedded_count,$f_source = NULL,$f_target = NULL,$f_view = "default",$f_view_options = true,$f_hide_override = NULL,$f_prefix = "")
 {
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview_subs (+f_data,$f_embedded_count,$f_source,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
-	return direct_datalinker_oset_iview ("subs",$f_data,$f_embedded_count,$f_source,$f_view,$f_view_options,$f_hide_override,$f_prefix);
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_datalinker_oset_iview_subs (+f_data,$f_embedded_count,+f_source,+f_target,$f_view,+f_view_options,+f_hide_override,$f_prefix)- (#echo(__LINE__)#)"); }
+	return direct_datalinker_oset_iview ("subs",$f_data,$f_embedded_count,$f_source,$f_target,$f_view,$f_view_options,$f_hide_override,$f_prefix);
 }
 
 //f// direct_datalinker_oset_iview_url ($f_url,$f_eid,$f_hide = false)

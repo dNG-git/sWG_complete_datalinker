@@ -82,8 +82,10 @@ if (($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs")||
 	$direct_cachedata['output_view'] = (isset ($direct_settings['dsd']['dview']) ? ($direct_classes['basic_functions']->inputfilter_number ($direct_settings['dsd']['dview'])) : "default");
 	$direct_cachedata['output_page'] = (isset ($direct_settings['dsd']['page']) ? ($direct_classes['basic_functions']->inputfilter_number ($direct_settings['dsd']['page'])) : 1);
 	$g_source = (isset ($direct_settings['dsd']['source']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['source'])) : "");
+	$g_target = (isset ($direct_settings['dsd']['target']) ? ($direct_classes['basic_functions']->inputfilter_basic ($direct_settings['dsd']['target'])) : "");
 
 	$g_source_url = ($g_source ? base64_decode ($g_source) : "m=datalinker&a=view&dsd=[oid]");
+	$g_target_url = ($g_target ? base64_decode ($g_target) : "");
 
 	if ((isset ($direct_settings['dsd']['dtheme']))&&($direct_settings['dsd']['dtheme']))
 	{
@@ -100,7 +102,7 @@ if (($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs")||
 			$g_dtheme_embedded = false;
 		}
 
-		$direct_cachedata['page_this'] = "m=dataport&s=swgap;datalinker;iview&a={$direct_settings['a']}&dsd=dtheme+{$direct_cachedata['output_dtheme_mode']}++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++source+".(urlencode ($g_source));
+		$direct_cachedata['page_this'] = "m=dataport&s=swgap;datalinker;iview&a={$direct_settings['a']}&dsd=dtheme+{$direct_cachedata['output_dtheme_mode']}++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++source+".(urlencode ($g_source))."++target+".(urlencode ($g_target));
 		$direct_cachedata['page_backlink'] = str_replace ("[oid]","deid+{$g_eid}++",$g_source_url);
 		$direct_cachedata['page_homelink'] = $direct_cachedata['page_backlink'] ;
 
@@ -142,7 +144,7 @@ if (($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs")||
 
 	if ($g_datalinker_array)
 	{
-		if (($direct_cachedata['output_options'])&&($direct_settings['user']['type'] != "gt")&&(($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs"))&&($g_datalinker_object->is_sub_allowed ())) { $direct_classes['output']->options_insert (1,"servicemenu","m=datalinker&s=subs&a=new&dsd=deid+{$g_eid}++source+".(urlencode ($g_source)),(direct_local_get ("core_datasub_new_entry")),$direct_settings['serviceicon_core_datasub_new'],"url0"); }
+		if (($direct_cachedata['output_options'])&&($direct_settings['user']['type'] != "gt")&&(($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs"))&&($g_datalinker_object->is_sub_allowed ())) { $direct_classes['output']->options_insert (1,"servicemenu","m=datalinker&s=subs&a=new&dsd=deid+{$g_eid}++source+".(urlencode ($g_source))."++target+".(urlencode ($g_target)),(direct_local_get ("core_datasub_new_entry")),$direct_settings['serviceicon_core_datasub_new'],"url0"); }
 
 		$direct_cachedata['output_object'] = $g_datalinker_object->parse ();
 		$direct_cachedata['output_objects'] = array ();
@@ -182,13 +184,13 @@ if (($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs")||
 			if ($g_dtheme_embedded)
 			{
 				direct_output_related_manager ("dataport_swgap_datalinker_iview","post_module_service_action_embedded");
-				$direct_cachedata['output_page_url'] = "m=dataport&s=swgap;datalinker;iview&a={$direct_settings['a']}&dsd=dtheme+2++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++source+".(urlencode ($g_source))."++";
+				$direct_cachedata['output_page_url'] = "m=dataport&s=swgap;datalinker;iview&a={$direct_settings['a']}&dsd=dtheme+2++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++source+".(urlencode ($g_source))."++target+".(urlencode ($g_target))."++";
 				$direct_classes['output']->oset ("datalinker_embedded","iview");
 			}
 			else
 			{
 				direct_output_related_manager ("dataport_swgap_datalinker_iview","post_module_service_action");
-				$direct_cachedata['output_page_url'] = "m=dataport&s=swgap;datalinker;iview&a={$direct_settings['a']}&dsd=dtheme+1++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++source+".(urlencode ($g_source))."++";
+				$direct_cachedata['output_page_url'] = "m=dataport&s=swgap;datalinker;iview&a={$direct_settings['a']}&dsd=dtheme+1++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++source+".(urlencode ($g_source))."++target+".(urlencode ($g_target))."++";
 				$direct_classes['output']->oset ("datalinker","iview");
 			}
 
@@ -199,7 +201,7 @@ if (($direct_settings['a'] == "index")||($direct_settings['a'] == "list_subs")||
 		}
 		else
 		{
-			$direct_cachedata['output_page_url'] = "javascript:djs_dataport_{$direct_cachedata['output_tid']}_call_url0('m=dataport&amp;s=swgap;datalinker;iview&amp;a={$direct_settings['a']}&amp;dsd=dtheme+0++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++page+[page]++source+".(urlencode ($g_source))."')";
+			$direct_cachedata['output_page_url'] = "javascript:djs_dataport_{$direct_cachedata['output_tid']}_call_url0('m=dataport&amp;s=swgap;datalinker;iview&amp;a={$direct_settings['a']}&amp;dsd=dtheme+0++deid+{$g_eid}++decount+{$g_ecount}++dsmode+{$g_smode}++doptions+{$direct_cachedata['output_options']}++page+[page]++source+".(urlencode ($g_source))."++target+".(urlencode ($g_target))."')";
 
 			$direct_classes['output']->header (false);
 			header ("Content-type: text/xml; charset=".$direct_local['lang_charset']);
