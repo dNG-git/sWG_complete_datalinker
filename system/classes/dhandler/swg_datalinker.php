@@ -578,8 +578,9 @@ Set up an additional variables :)
 			{
 				$direct_classes['db']->init_delete ($direct_settings['datalinker_table']);
 
-				$f_delete_criteria = "<sqlconditions>".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id",$this->data['ddbdatalinker_id'],"string"))."</sqlconditions>";
-				$direct_classes['db']->define_row_conditions ($f_delete_criteria);
+				$f_delete_criteria = "<sqlconditions>".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id",$this->data['ddbdatalinker_id'],"string"));
+				if ($direct_settings['datalinker_site']) { $f_delete_criteria .= "<subsite type='sublevel'><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id_site' null='1' condition='or' />".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_site",$direct_settings['swg_id'],"string","==","or"))."</subsite>"; }
+				$direct_classes['db']->define_row_conditions ($f_delete_criteria."</sqlconditions>");
 
 				$f_return = $direct_classes['db']->query_exec ("ar");
 
@@ -706,6 +707,7 @@ Set up an additional variables :)
 				}
 
 				$f_select_criteria = "<sqlconditions>";
+				if ($direct_settings['datalinker_site']) { $f_select_criteria .= "<subsite type='sublevel'><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id_site' null='1' condition='or' />".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_site",$direct_settings['swg_id'],"string","==","or"))."</subsite>"; }
 
 				if (isset ($f_attributes,$f_values))
 				{
@@ -931,6 +933,7 @@ Set up an additional variables :)
 		}
 
 		$f_select_criteria = "<sqlconditions>".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_main",$this->data['ddbdatalinker_id_main'],"string"));
+		if ($direct_settings['datalinker_site']) { $f_select_criteria .= "<subsite type='sublevel'><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id_site' null='1' condition='or' />".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_site",$direct_settings['swg_id'],"string","==","or"))."</subsite>"; }
 		if (strlen ($f_sid)) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_sid",$f_sid,"string"); }
 
 		if ((is_string ($f_type))&&(strlen ($f_type))) { $f_type = array ($f_type); }
@@ -1097,8 +1100,9 @@ $f_select_ordering = ("<sqlordering>
 			$f_select_attributes = array ($direct_settings['datalinker_table'].".ddbdatalinker_sid",$direct_settings['datalinker_table'].".ddbdatalinker_type","count-rows($direct_settings[datalinker_table].ddbdatalinker_type)");
 			$direct_classes['db']->define_attributes ($f_select_attributes);
 
-			$f_select_criteria = "<sqlconditions>".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_parent",$this->data['ddbdatalinker_id'],"string"))."</sqlconditions>";
-			$direct_classes['db']->define_row_conditions ($f_select_criteria);
+			$f_select_criteria = "<sqlconditions>".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_parent",$this->data['ddbdatalinker_id'],"string"));
+			if ($direct_settings['datalinker_site']) { $f_select_criteria .= "<subsite type='sublevel'><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id_site' null='1' condition='or' />".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_site",$direct_settings['swg_id'],"string","==","or"))."</subsite>"; }
+			$direct_classes['db']->define_row_conditions ($f_select_criteria."</sqlconditions>");
 
 			$direct_classes['db']->define_grouping (array ($direct_settings['datalinker_table'].".ddbdatalinker_sid",$direct_settings['datalinker_table'].".ddbdatalinker_type"));
 			$f_results_array = $direct_classes['db']->query_exec ("ma");
@@ -1187,6 +1191,7 @@ $f_select_ordering = ("<sqlordering>
 			$f_select_criteria = "<sqlconditions>";
 			if ($f_pid !== NULL) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_parent",$f_pid,"string"); }
 			if ($f_mid !== NULL) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_main",$f_mid,"string"); }
+			if ($direct_settings['datalinker_site']) { $f_select_criteria .= "<subsite type='sublevel'><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id_site' null='1' condition='or' />".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_site",$direct_settings['swg_id'],"string","==","or"))."</subsite>"; }
 			if (strlen ($f_sid)) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_sid",$f_sid,"string"); }
 			if (strlen ($f_type)) { $f_select_criteria .= $direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_type",$f_type,"number"); }
 
@@ -1713,6 +1718,12 @@ $f_select_ordering = ("<sqlordering>
 				$this->data_changed['ddbdatalinker_id_main'] = true;
 			}
 
+			if (($direct_settings['datalinker_site'])&&(!isset ($f_data['ddbdatalinker_id_site'])))
+			{
+				$f_data['ddbdatalinker_id_site'] = NULL;
+				$this->data_changed['ddbdatalinker_id_site'] = true;
+			}
+
 			if (!isset ($f_data['ddbdatalinker_title_alt']))
 			{
 				$f_data['ddbdatalinker_title_alt'] = "";
@@ -1755,6 +1766,7 @@ $f_select_ordering = ("<sqlordering>
 $f_attributes = array ("ddbdatalinker_id","ddbdatalinker_id_object","ddbdatalinker_id_parent","ddbdatalinker_id_main","ddbdatalinker_sid","ddbdatalinker_type","ddbdatalinker_position","ddbdatalinker_title_alt",
 "ddbdatalinker_subs","ddbdatalinker_objects","ddbdatalinker_sorting_date","ddbdatalinker_symbol","ddbdatalinker_title","ddbdatalinker_datasubs_type","ddbdatalinker_datasubs_hide","ddbdatalinker_datasubs_new","ddbdatalinker_views_count","ddbdatalinker_views");
 
+			if ($direct_settings['datalinker_site']) { $f_attributes[] = "ddbdatalinker_id_site"; }
 			$this->set_extras ($f_data,$f_attributes);
 
 			if (($this->data['ddbdatalinker_datasubs_type'] !== NULL)&&(($f_data['ddbdatalinker_datasubs_new'])||($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type']) > 3))) { $this->data_subs_allowed = true; }
@@ -1766,7 +1778,7 @@ $f_attributes = array ("ddbdatalinker_id","ddbdatalinker_id_object","ddbdatalink
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->set ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_datalinker->set_extras ($f_data,$f_keys = "")
+	//f// direct_datalinker->set_extras ($f_data,$f_keys = NULL)
 /**
 	* Fills in additional keys in "$this->data". If $f_keys are specified
 	* this method will overwrite existing values. Without $f_keys all keys in
@@ -1778,7 +1790,7 @@ $f_attributes = array ("ddbdatalinker_id","ddbdatalinker_id_object","ddbdatalink
 	* @uses   USE_debug_reporting
 	* @since  v0.1.00
 */
-	public function set_extras ($f_data,$f_keys = "")
+	public function set_extras ($f_data,$f_keys = NULL)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->set_extras (+f_data,+f_keys)- (#echo(__LINE__)#)"); }
 
@@ -1938,6 +1950,7 @@ $f_attributes = array ("ddbdatalinker_id","ddbdatalinker_id_object","ddbdatalink
 					if (($this->data_insert_mode)||(isset ($this->data_changed['ddbdatalinker_id_object']))) { $f_update_values .= $direct_classes['db']->define_set_attributes_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_object",$this->data['ddbdatalinker_id_object'],"string"); }
 					if (($this->data_insert_mode)||(isset ($this->data_changed['ddbdatalinker_id_parent']))) { $f_update_values .= $direct_classes['db']->define_set_attributes_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_parent",$this->data['ddbdatalinker_id_parent'],"string"); }
 					if (($this->data_insert_mode)||(isset ($this->data_changed['ddbdatalinker_id_main']))) { $f_update_values .= $direct_classes['db']->define_set_attributes_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_main",$this->data['ddbdatalinker_id_main'],"string"); }
+					if (($direct_settings['datalinker_site'])&&(($this->data_insert_mode)||(isset ($this->data_changed['ddbdatalinker_id_main'])))) { $f_update_values .= $direct_classes['db']->define_set_attributes_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_site",$this->data['ddbdatalinker_id_site'],"string"); }
 					if (($this->data_insert_mode)||(isset ($this->data_changed['ddbdatalinker_sid']))) { $f_update_values .= $direct_classes['db']->define_set_attributes_encode ($direct_settings['datalinker_table'].".ddbdatalinker_sid",$this->data['ddbdatalinker_sid'],"string"); }
 					if (($this->data_insert_mode)||(isset ($this->data_changed['ddbdatalinker_type']))) { $f_update_values .= $direct_classes['db']->define_set_attributes_encode ($direct_settings['datalinker_table'].".ddbdatalinker_type",$this->data['ddbdatalinker_type'],"string"); }
 					if (($this->data_insert_mode)||(isset ($this->data_changed['ddbdatalinker_position']))) { $f_update_values .= $direct_classes['db']->define_set_attributes_encode ($direct_settings['datalinker_table'].".ddbdatalinker_position",$this->data['ddbdatalinker_position'],"number"); }
@@ -2017,6 +2030,7 @@ define ("CLASS_direct_datalinker",true);
 //j// Script specific commands
 
 if (!isset ($direct_settings['datalinker_objects_per_page'])) { $direct_settings['datalinker_objects_per_page'] = 15; }
+if (!isset ($direct_settings['datalinker_site'])) { $direct_settings['datalinker_site'] = false; }
 if (!isset ($direct_settings['swg_auto_maintenance'])) { $direct_settings['swg_auto_maintenance'] = false; }
 }
 
