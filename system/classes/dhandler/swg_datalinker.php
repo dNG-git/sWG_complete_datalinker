@@ -186,6 +186,7 @@ Informing the system about available functions
 		$this->functions['is_of_type'] = true;
 		$this->functions['is_sub_allowed'] = true;
 		$this->functions['is_views_counting'] = true;
+		$this->functions['parse'] = true;
 		$this->functions['remove_objects'] = true;
 		$this->functions['remove_subs'] = true;
 		$this->functions['remove_views'] = true;
