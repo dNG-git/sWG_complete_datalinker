@@ -104,7 +104,7 @@ function direct_output_oset_datalinker_list_iviews ()
 	$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
 	$f_ajax_call = addslashes (direct_linker ("url0","m=dataport&s=ajax;datalinker;iview&a=content&dsd=deid+[f_id]++tid+{$direct_cachedata['output_tid']}++source+".(urlencode ($direct_cachedata['output_source'])),false));
 
-$f_return = ("<p class='pagecontenttitle'>{$direct_cachedata['output_title']}</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return = ("<p class='pagecontenttitle'>{$direct_cachedata['output_title']}</p><script type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	if (typeof (djs_var['datalinker_iview_content_requested_id']) == 'undefined') { djs_var['datalinker_iview_content_requested_id'] = ''; }

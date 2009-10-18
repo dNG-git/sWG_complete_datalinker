@@ -94,7 +94,7 @@ function direct_datalinker_oset_iview ($f_mode,$f_data,$f_embedded_count,$f_sour
 		$f_ajax_call = addslashes (direct_linker ("url0","m=dataport&s=ajax;datalinker;iview&a=content&dsd=deid+[f_id]++tid+".$f_data[$f_prefix."oid"].$f_source.$f_target,false));
 		$f_ajax_call_url0 = addslashes (direct_linker ("url0","[f_url]",false));
 
-$f_return = ("<script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return = ("<script type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	if (typeof (djs_var['datalinker_iview_content_requested_id']) == 'undefined') { djs_var['datalinker_iview_content_requested_id'] = ''; }
@@ -126,13 +126,13 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 
 		if ((($f_hide_override === NULL)&&($f_data[$f_prefix."subs_hide"]))||(($f_hide_override !== NULL)&&($f_hide_override)))
 		{
-$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_mode}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+".$f_view.$f_view_options_code.$f_source.$f_target))."' target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_mode}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+".$f_view.$f_view_options_code.$f_source.$f_target))."' target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p><script type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_".$f_data[$f_prefix."subs_id"]."_call_url0('m=dataport&amp;s=swgap;datalinker;iview&amp;a=list_{$f_mode}&amp;dsd=dtheme+0++deid+".$f_data[$f_prefix."oid"]."++decount+$f_embedded_count++dview+{$f_view}{$f_view_options_code}{$f_source}{$f_target}');\\\" target='_self'>".$f_data[$f_prefix."subs_link_title"]."</a> (".$f_data[$f_prefix."subs"].")</p>\",'swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point'); }
 ]]></script>");
 		}
 		else
 		{
-$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'>".(direct_local_get ("core_datasub_error_1"))."<a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_mode}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+".$f_view.$f_view_options_code.$f_source.$f_target))."' target='_self'>".(direct_local_get ("core_datasub_error_2"))."</a>".(direct_local_get ("core_datasub_error_3"))."</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return .= ("<p id='swgAJAX_datalinker_iview_".$f_data[$f_prefix."subs_id"]."_point' class='pagecontent'>".(direct_local_get ("core_datasub_error_1"))."<a href='".(direct_linker ("url0","m=dataport&s=swgap;datalinker;iview&a=list_{$f_mode}&dsd=dtheme+1++deid+".$f_data[$f_prefix."oid"]."++dview+".$f_view.$f_view_options_code.$f_source.$f_target))."' target='_self'>".(direct_local_get ("core_datasub_error_2"))."</a>".(direct_local_get ("core_datasub_error_3"))."</p><script type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable))
@@ -363,7 +363,7 @@ function direct_datalinker_oset_iview_url ($f_url,$f_eid,$f_hide = false)
 	$f_ajax_call_url0 = addslashes (direct_linker ("url0","[f_url]",false));
 	$f_ajax_url = str_replace ("&","&amp;",$f_url);
 
-$f_return = ("<script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return = ("<script type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	if (typeof (djs_var['datalinker_iview_content_requested_id']) == 'undefined') { djs_var['datalinker_iview_content_requested_id'] = ''; }
@@ -395,7 +395,7 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 
 	if ($f_hide)
 	{
-$f_return .= ("<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href='".(direct_linker ("url0",$f_url."++dtheme+1"))."' target='_self'>".(direct_local_get ("core_datasub_title_link_default"))."</a></p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return .= ("<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href='".(direct_linker ("url0",$f_url."++dtheme+1"))."' target='_self'>".(direct_local_get ("core_datasub_title_link_default"))."</a></p><script type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable)) { djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'><a href=\\\"javascript:djs_dataport_{$f_eid}_call_url0('$f_ajax_url');\\\">".(direct_local_get ("core_datasub_title_link_default"))."</a></p>\",'swgAJAX_datalinker_iview_{$f_eid}_point'); }
@@ -404,7 +404,7 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 	}
 	else
 	{
-$f_return .= ("<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'>".(direct_local_get ("core_datasub_error_1"))."<a href='".(direct_linker ("url0",$f_url."++dtheme+1"))."' target='_self'>".(direct_local_get ("core_datasub_error_2"))."</a>".(direct_local_get ("core_datasub_error_3"))."</p><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return .= ("<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'>".(direct_local_get ("core_datasub_error_1"))."<a href='".(direct_linker ("url0",$f_url."++dtheme+1"))."' target='_self'>".(direct_local_get ("core_datasub_error_2"))."</a>".(direct_local_get ("core_datasub_error_3"))."</p><script type='text/javascript'><![CDATA[
 if ((djs_swgAJAX)&&(djs_swgDOM))
 {
 	djs_swgDOM_replace (\"<p id='swgAJAX_datalinker_iview_{$f_eid}_point' class='pagecontent'>".(direct_local_get ("core_datasub_loading","text"))."</p>\",'swgAJAX_datalinker_iview_{$f_eid}_point');

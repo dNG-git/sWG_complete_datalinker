@@ -581,7 +581,9 @@ Set up an additional variables :)
 
 				$f_delete_criteria = "<sqlconditions>".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id",$this->data['ddbdatalinker_id'],"string"));
 				if ($direct_settings['datalinker_site']) { $f_delete_criteria .= "<subsite type='sublevel'><element1 attribute='$direct_settings[datalinker_table].ddbdatalinker_id_site' null='1' condition='or' />".($direct_classes['db']->define_row_conditions_encode ($direct_settings['datalinker_table'].".ddbdatalinker_id_site",$direct_settings['swg_id'],"string","==","or"))."</subsite>"; }
-				$direct_classes['db']->define_row_conditions ($f_delete_criteria."</sqlconditions>");
+				$f_delete_criteria .= "</sqlconditions>";
+
+				$direct_classes['db']->define_row_conditions ($f_delete_criteria);
 
 				$f_return = $direct_classes['db']->query_exec ("ar");
 
@@ -679,7 +681,7 @@ Set up an additional variables :)
 
 		if (isset ($f_attributes))
 		{
-			if ($this->data) { $f_return = $this->data; }
+			if (count ($this->data) > 1) { $f_return = $this->data; }
 			elseif ((($f_values == NULL)&&(!empty ($this->data_extra_conditions)))||(isset ($f_attributes)))
 			{
 				$direct_classes['db']->init_select ($direct_settings['datalinker_table']);
@@ -1432,9 +1434,9 @@ $f_select_ordering = ("<sqlordering>
 	public function is_changed ($f_keys_array)
 	{
 		if (USE_debug_reporting) { direct_debug (7,"sWG/#echo(__FILEPATH__)# -datalinker_handler->is_changed (+f_keys_array)- (#echo(__LINE__)#)"); }
-		$f_return = false;
+		$f_return = $this->data_insert_mode;
 
-		if (is_array ($f_keys_array))
+		if ((!$f_return)&&(is_array ($f_keys_array)))
 		{
 			foreach ($f_keys_array as $f_key)
 			{
@@ -1534,7 +1536,9 @@ $f_select_ordering = ("<sqlordering>
 */
 	public function parse ($f_prefix = "")
 	{
+		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -datalinker_handler->parse ($f_prefix)- (#echo(__LINE__)#)"); }
+
 		$f_return = array ();
 
 		if (count ($this->data) > 1)
@@ -1542,6 +1546,13 @@ $f_select_ordering = ("<sqlordering>
 			$f_id_safe = strtolower (preg_replace ("#\W#","_",$this->data['ddbdatalinker_id']));
 			$f_return[$f_prefix."id"] = "swgdhandlerdatalinker".$f_id_safe;
 			$f_return[$f_prefix."oid"] = $this->data['ddbdatalinker_id'];
+
+			if ($direct_settings['redirector_permalinks'])
+			{
+				$f_pageurl = ((isset ($direct_settings['swg_redirect_url'])) ? $direct_settings['swg_redirect_url'] : $direct_settings['home_url']."/swg_redirect.php?");
+				$f_return[$f_prefix."pageurl_permalink"] = $f_pageurl.";redirector;;permalink;".$this->data['ddbdatalinker_id_object'];
+			}
+
 			$f_return[$f_prefix."title"] = direct_html_encode_special ($this->data['ddbdatalinker_title']);
 			$f_return[$f_prefix."title_alt"] = direct_html_encode_special ($this->data['ddbdatalinker_title_alt']);
 			$f_return[$f_prefix."objects"] = $this->data['ddbdatalinker_objects'];
@@ -1703,7 +1714,7 @@ $f_select_ordering = ("<sqlordering>
 
 		$f_return = false;
 
-		if (isset ($f_data['ddbdatalinker_id'],$f_data['ddbdatalinker_id_parent'],$f_data['ddbdatalinker_sid'],$f_data['ddbdatalinker_type'],$f_data['ddbdatalinker_subs'],$f_data['ddbdatalinker_objects'],$f_data['ddbdatalinker_position'],$f_data['ddbdatalinker_sorting_date'],$f_data['ddbdatalinker_symbol'],$f_data['ddbdatalinker_title']))
+		if (isset ($f_data['ddbdatalinker_id'],$f_data['ddbdatalinker_id_parent'],$f_data['ddbdatalinker_sid'],$f_data['ddbdatalinker_type'],$f_data['ddbdatalinker_position'],$f_data['ddbdatalinker_subs'],$f_data['ddbdatalinker_objects'],$f_data['ddbdatalinker_sorting_date'],$f_data['ddbdatalinker_symbol'],$f_data['ddbdatalinker_title']))
 		{
 			$this->changed ($f_data);
 
@@ -2032,6 +2043,7 @@ define ("CLASS_direct_datalinker",true);
 
 if (!isset ($direct_settings['datalinker_objects_per_page'])) { $direct_settings['datalinker_objects_per_page'] = 15; }
 if (!isset ($direct_settings['datalinker_site'])) { $direct_settings['datalinker_site'] = false; }
+if (!isset ($direct_settings['redirector_permalinks'])) { $direct_settings['redirector_permalinks'] = false; }
 if (!isset ($direct_settings['swg_auto_maintenance'])) { $direct_settings['swg_auto_maintenance'] = false; }
 }
 
